@@ -6,7 +6,7 @@
   "scripts": {
     "karma": "./node_modules/karma/bin/karma start",
     "test": "npm run karma",
-    "test-once": "npm karma -- --single-run",
+    "test-once": "npm run karma -- --single-run",
     "deploy": "firebase --email ${FIREBASE_EMAIL} --password ${FIREBASE_PASSWORD} deploy",
     "build": "./build.sh"
   },

@@ -1,0 +1,33 @@
+{
+  "name": "spookyDating",
+  "version": "0.0.1",
+  "description": "App for valentines day",
+  "main": "public/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erlandsona/spookyDating.git"
+  },
+  "author": "Austin <austin@erlandson.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erlandsona/spookyDating/issues"
+  },
+  "homepage": "https://github.com/erlandsona/spookyDating",
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "codeclimate-test-reporter": "0.0.4",
+    "karma": "^0.12.31",
+    "karma-chai": "^0.1.0",
+    "karma-coverage": "^0.2.7",
+    "karma-coveralls": "^0.1.5",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "mocha": "^2.1.0",
+    "mocha-phantomjs": "^3.5.3",
+    "phantomjs": "^1.9.15"
+  }
+}

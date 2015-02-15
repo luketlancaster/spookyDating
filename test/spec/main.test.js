@@ -23,15 +23,21 @@ describe('DOM', function () {
     it('should exist', function () {
       $('form').should.exist;
     });
-    describe.skip('', function () {
-      it('', function () {
-      });
-    });
-
-    //beforeEach(function () {
-      //$('#registerAndLogin').empty();
-    //});
   });
 });
 
 
+
+describe('addProfilePic', function() {
+  before(function () {
+    if (window.__karma__) {
+      var picture = 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS6H-zrpSy35X405e8Ske1fuYB_vQNcNP1pZDkf7mOQirUE9ee6oA';
+      $('body').append('<div><img src=""></div>')
+      }
+    });
+  it('should upload a new profile picture', function() {
+    $('img').attr('src').should.equal("");
+    addProfilePic();
+    $('img').attr('src').should.equal(picture);
+  });
+});

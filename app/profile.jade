@@ -7,8 +7,22 @@ html
     link(rel="stylesheet" href="css/main.css")
 
   body
+    include partials/_navbar.jade
+
+    button Logout
 
     h1 Welcome to your profile
+    div
+      form
+        input(type="text" placeholder="Name")
+        input(type="text" placeholder="Image URL")
+        input(type="email" placeholder="ghost@google.com")
+        button Submit
+
+    div
+      img(src="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035")
+      h3 Name
+      ul Interests
 
     script(src="vendor/jquery.min.js")
     script(src="vendor/lodash.min.js")

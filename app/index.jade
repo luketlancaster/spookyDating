@@ -6,8 +6,9 @@ html
     link(rel="stylesheet" href="vendor/bootstrap.min.css")
     link(rel="stylesheet" href="css/main.css")
 
-
   body
+    include partials/_navbar.jade
+
     h1 Welcome to Spooooky Dating
     h2 Please login or register
 
@@ -18,6 +19,7 @@ html
       button#createUser Create User
 
     a(href="profile.html") Profile
+    a(href="match.html") Matches
 
     script(src="vendor/jquery.min.js")
     script(src="vendor/lodash.min.js")

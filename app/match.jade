@@ -6,15 +6,17 @@ html
   body
     include partials/_navbar.jade
 
-    h1 Make a match!
-    img(src"#")
-    div
-      div Name
-      div Interests
-    button Boo
-    button Eew
+    .row
+      .large-6.columns.large-offset-3
+        h1 Make a match!
+        img(src"#")
+        div
+          div Name
+          div Interests
+        button Boo
+        button Eew
 
-    button Logout
+        button Logout
 
     script(src="vendor/jquery.min.js")
     script(src="vendor/lodash.min.js")

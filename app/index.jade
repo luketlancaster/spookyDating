@@ -6,14 +6,17 @@ html
   body
     include partials/_navbar.jade
 
-    h1 Welcome to Spooooky Dating
-    h2 Please login or register
+    .row
+      .large-6.columns.large-offset-3
+        .login_screen_form
+          h1 Welcome to Spooooky Dating
+          h2 Login or register...if you dare!!!
 
-    form
-      input(type="text" placeholder="username")
-      input(type="password" placeholder="password")
-      button#login Login
-      button#createUser Create User
+          form
+            input(type="text" placeholder="username")
+            input(type="password" placeholder="password")
+            button#login Login
+            button#createUser Create User
 
     script(src="vendor/jquery.min.js")
     script(src="vendor/lodash.min.js")

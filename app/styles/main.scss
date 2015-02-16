@@ -1,7 +1,31 @@
+@import './foundation/scss/normalize';
+@import './foundation/scss/foundation';
+
 h1 {
-  color: blue;
+  color: orange;
+  font-family: 'Amatic SC', cursive;
+}
+h2 {
+  font-family: 'Amatic SC', cursive;
+}
+.login_screen_form {
+  text-align: center;
+
+  .button {
+    margin: 5px;
+  }
+}
+.profile_page_headers {
+  text-align: center;
 }
 
+.match_page_contents {
+  text-align: center;
+
+  .button {
+    margin: 5px;
+  }
+}
 img {
   width: 300px;
 }
@@ -9,4 +33,18 @@ img {
 .navbar_li {
   margin: 20px;
   padding: 20px;
+}
+.icon-bar.three-up {
+
+  .item:hover {
+    background: darkorange !important;
+  }
+}
+.button {
+  background: orange !important;
+
+  .button:hover{
+    background: darkorange !important;
+  }
+
 }

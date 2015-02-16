@@ -1,26 +1,23 @@
 doctype html
 html
 
-  head
-    title(Spoooky Dating)
-    link(rel="stylesheet" href="vendor/bootstrap.min.css")
-    link(rel="stylesheet" href="css/main.css")
+  include partials/_head.jade
 
   body
-    include partials/_navbar.jade
+    .row
+      .large-6.columns.large-offset-3
+        .login_screen_form
+          h1 Welcome to Spooooky Dating
+          h2 Login or register...if you dare!!!
 
-    h1 Welcome to Spooooky Dating
-    h2 Please login or register
+          form
+            input(id="loginEmail" type="email" placeholder="email")
+            input(id="loginPassword" type="password" placeholder="password")
+            input(id="login" type="button" value="Login" class="button")
+            input(id="createUser" type="button" value="Create Account" class="button")
+            .error
 
-    form
-      input(type="text" placeholder="username")
-      input(type="password" placeholder="password")
-      button#login Login
-      button#createUser Create User
-
-    a(href="profile.html") Profile
-    a(href="match.html") Matches
-
-    script(src="vendor/jquery.min.js")
-    script(src="vendor/lodash.min.js")
-    script(src="js/main.js")
+  script(src="vendor/jquery.min.js")
+  script(src="vendor/lodash.min.js")
+  script(src="https://cdn.firebase.com/js/client/2.2.0/firebase.js")
+  script(src="js/main.js")

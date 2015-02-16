@@ -1,25 +1,26 @@
 doctype html
 html
 
-  head
-    title(Spoooky Matching)
-    link(rel="stylesheet" href="vendor/bootstrap.min.css")
-    link(rel="stylesheet" href="css/main.css")
+  include partials/_head.jade
 
   body
     include partials/_navbar.jade
 
-    h1 Make a match!
-    img(src"#")
-    div
-      div Name
-      div Interests
-    button Boo
-    button Eew
+    .row
+      .large-6.columns.large-offset-3
+        .match_page_contents
+          h1 Make a match!
+          img(src"#")
+          div
+            div Name
+            div Interests
+          button Boo
+          button Eew
 
-    button Logout
+          button Logout
 
     script(src="vendor/jquery.min.js")
     script(src="vendor/lodash.min.js")
+    script(src="https://cdn.firebase.com/js/client/2.2.0/firebase.js")
     script(src="js/main.js")
 

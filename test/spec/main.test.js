@@ -40,18 +40,3 @@ describe('addProfilePic', function() {
   });
 });
 
-describe('', function() {
-  before(function() {
-    if (window.__karma__) {
-      $('body').append('<div class="noMatches"><div class="bio"></div></div>')
-    }
-  });
-  it('should add a bio to the profile', function() {
-    var bio = "My name is monster";
-    $('.bio').should.be('');
-    addUserData();
-    $('.bio').should.equal(bio);
-  });
-});
-
-

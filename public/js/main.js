@@ -1,23 +1,13 @@
 /* jshint node: true */
 'use strict';
 
-
-var hello = function hello() {
-  return 'world';
-};
-
+//$(document).ready(function() {
 
   var $form = $('.form');
   var $tbody = $('.tbody');
   var fbUrl = 'https://spookydating.firebaseio.com';
   var fb = new Firebase(fbUrl);
   var usersFb;
-
-  function goToProfilePage () {
-    if (fb.getAuth()) {
-      window.location.href = 'profile.html'
-    }
-  }
 
   //LOGIN FUNCTION//
   $('#login').click(function(event) {
@@ -29,13 +19,21 @@ var hello = function hello() {
 
     fb.authWithPassword(loginData, function(err, auth) {
       if (err) {
-        $('.error').text(err);
+        $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
       } else {
-        location.reload(true);
+        goToProfilePage();
       }
     });
-    goToProfilePage();
   });
+
+  //REDIRECT FUNCTION - LOGIN//
+  function goToProfilePage() {
+    if (fb.getAuth()) {
+      window.location.href = 'profile.html'
+    } else {
+      $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
+    }
+  }
 
   //REGISTER FUNCTION//
   $('#createUser').click(function(event) {
@@ -71,3 +69,17 @@ var hello = function hello() {
     });
   }
 
+  //LOGOUT FUNCTION//
+  //$('#logout').click(function logout() {
+    //fb.unauth();
+    //goToLoginPage();
+  //});
+
+  //REDIRECT FUNCTION - LOGOUT//
+  //function goToLoginPage() {
+    //if (fb.unauth()) {
+      //window.location.href = 'index.html'
+    //}
+  //}
+
+//});

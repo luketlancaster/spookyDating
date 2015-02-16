@@ -6,35 +6,25 @@ var hello = function hello() {
   return 'world';
 };
 
-var $form = $('.form');
-var $tbody = $('.tbody');
-var fbUrl = 'https://spookydating.firebaseio.com';
-var fb = new Firebase(fbUrl);
-var usersFb;
 
-//LOGIN AND MAKE PULL FROM API//
-//usersFb = fb.child('users/' + fb.getAuth().uid + '/data');
+  var $form = $('.form');
+  var $tbody = $('.tbody');
+  var fbUrl = 'https://spookydating.firebaseio.com';
+  var fb = new Firebase(fbUrl);
+  var usersFb;
 
-//usersFb.once('value', function(data) {
-  //var userInfo = data.val();
-  //Object.keys(userInfo).forEach(function(uuid) {
-
-  //});
-//});
-
-    //$.get(usersFirebaseUrl + '/contact.json?auth=' + fb.getAuth().token, function(data) {
-      //if (data) {
-        //Object.keys(data).forEach(function(uuid){
-          //addRowToTable(uuid, data[uuid]);
-        //});
-      //}
-    //});
-  //}
+  function goToProfilePage () {
+    if (fb.getAuth()) {
+      window.location.href = 'profile.html'
+    }
+  }
 
   //LOGIN FUNCTION//
-  $('#login input[type="button"]').click(function(event) {
-    var email = $('#loginEmail').val();
-    var password = $('#loginPassword').val();
+  $('#login').click(function(event) {
+   event.preventDefault();
+    var $form = $($(this).closest('form'));
+    var email = $form.find('[type="email"]').val();
+    var password = $form.find('[type="password"]').val();
     var loginData = {email: email, password: password};
 
     fb.authWithPassword(loginData, function(err, auth) {
@@ -44,12 +34,15 @@ var usersFb;
         location.reload(true);
       }
     });
+    goToProfilePage();
   });
 
   //REGISTER FUNCTION//
-  $('#createUser input[type="button"]').click(function(event) {
-    var email = $('#loginEmail').val();
-    var password = $('#loginPassword').val();
+  $('#createUser').click(function(event) {
+    event.preventDefault();
+    var $form = $($(this).closest('form'));
+    var email = $form.find('[type="email"]').val();
+    var password = $form.find('[type="password"]').val();
     var loginData = {email: email, password: password};
 
     registerAndLogin(loginData, function(err, auth) {

@@ -1,3 +1,6 @@
+@import './foundation/scss/normalize';
+@import './foundation/scss/foundation';
+
 h1 {
   color: orange;
   font-family: 'Amatic SC', cursive;
@@ -8,17 +11,18 @@ h2 {
 .login_screen_form {
   text-align: center;
 
-  button {
+  .button {
     margin: 5px;
   }
 }
 .profile_page_headers {
   text-align: center;
 }
+
 .match_page_contents {
   text-align: center;
 
-  button {
+  .button {
     margin: 5px;
   }
 }

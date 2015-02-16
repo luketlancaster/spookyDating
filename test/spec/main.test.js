@@ -13,6 +13,12 @@ describe('hello', function () {
   });
 });
 
+//beforeEach(function () {
+//    if (window.__karma__) {
+//      $('body').empty();
+//    }
+//});
+
 describe('DOM', function () {
   describe('form', function () {
     before(function () {
@@ -48,3 +54,34 @@ describe('DOM', function () {
 });
 
 
+
+describe('addProfilePic', function() {
+  before(function () {
+    if (window.__karma__) {
+      $('body').append('<div><img src=""></div>');
+      }
+    });
+  it('should upload a new profile picture', function() {
+    var profilePicture = 'https://encrypted-tbn1.gstatic.com/' +
+                         'images?q=tbn:ANd9GcS6H-zrpSy35X405e' +
+                         '8Ske1fuYB_vQNcNP1pZDkf7mOQirUE9ee6oA';
+    $('img').attr('src').should.equal('');
+    addProfilePic(profilePicture);
+    $('img').attr('src').should.equal(profilePicture);
+  });
+});
+
+
+
+describe.skip('addUserData', function() {
+  before(function () {
+    if (window.__karma__) {
+      $('body').append('<div class="blah"></div>');
+      }
+    });
+  it('should append text to page', function() {
+
+    addUserData(name, bio, interests);
+
+  });
+});

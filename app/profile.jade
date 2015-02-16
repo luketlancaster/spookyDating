@@ -1,0 +1,39 @@
+doctype html
+html
+
+  include partials/_head.jade
+
+  body
+    include partials/_navbar.jade
+
+
+    .row
+      .small-6.columns.small-offset-3
+        .profile_page_headers
+          h1 Complete your profile, you ghoul!
+        div
+          form
+            lable Name
+            input(type="text" placeholder="Name")
+            lable Email
+            input(type="email" placeholder="ghost@google.com")
+            lable Image
+            input(type="text" placeholder="Image URL")
+            lable Bio
+            input(type="text" placeholder="I'm a pretty cool ghoul who loves the Monster Mash!")
+            lable Interests
+            input(type="text" placeholder="haunting, being an apparition, floating")
+            button Submit
+
+          div
+            img.profile_picture(src="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035")
+            h3 Name:
+            .profile_bio
+              div Bio:
+            .profile_interests
+              div Interests:
+
+    script(src="vendor/jquery.min.js")
+    script(src="vendor/lodash.min.js")
+    script(src="js/main.js")
+

@@ -9,7 +9,7 @@ mkdir public/js
 # Copy html and css files in the app folder into the public directory and preserve directories
 # Add additional file extensions if needed i.e. images, fonts, etc..
 cd app
-find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) | cpio -pdvm ../public
+find . -type f \( -name "*.html" -name "*.scss" -o -name "*.js" \) | cpio -pdvm ../public
 cd ..
 
 
@@ -17,8 +17,9 @@ cd ..
 mkdir public/vendor
 cp bower_components/jquery/dist/jquery.min.js public/vendor
 cp bower_components/lodash/lodash.min.js public/vendor
-cp bower_components/firebase/firebase.js public/vendor
-
+#cp bower_components/firebase/firebase.js public/vendor
+cp bower_components/foundation/css/normalize.css public/vendor
+cp bower_components/foundation/css/foundation.css public/vendor
 
 
 ###############################

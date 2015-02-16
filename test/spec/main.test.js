@@ -86,6 +86,17 @@ describe('validateEmailAddress', function() {
     var email2="countChocula@gmail.com";
     validateEmailAddress(email1).should.be.false;
     validateEmailAddress(email2).should.be.true;
+  });
+});
+
+describe('addTwo', function () {
+  it('should add two numbers', function () {
+  var num1 = 2;
+  var num2 = 4;
+  addTwo(num1, num2).should.equal(6);
+  });
+});
+
 describe('addProfilePic', function() {
   before(function () {
     if (window.__karma__) {
@@ -95,8 +106,18 @@ describe('addProfilePic', function() {
   it('should upload a new profile picture', function() {
     var picture = 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS6H-zrpSy35X405e8Ske1fuYB_vQNcNP1pZDkf7mOQirUE9ee6oA';
     $('img').attr('src').should.equal("");
-    addProfilePic();
+    addProfilePic(picture);
     $('img').attr('src').should.equal(picture);
   });
 });
 
+//describe('userLogin', function () {
+  //it('should log a user in', function(done) {
+     //var fbUrl = 'https://spookydating.firebaseio.com';
+     //var fb = new Firebase(fbUrl);
+     //var loginData = {email: 'a@b.com', password: '123456'};
+     //userLogin(loginData);
+     //fb.getAuth().password.email.should.contain('@');
+     //done();
+  //});
+//});

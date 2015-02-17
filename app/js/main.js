@@ -80,7 +80,7 @@ function validateEmailAddress (emailAddress) {
       if (err) {
         $('.error').text(err);
       } else {
-        location.reload(true);
+        goToProfilePage();
       }
     });
   });

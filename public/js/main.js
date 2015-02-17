@@ -4,8 +4,11 @@
 //FUNCTIONS FOR TESTING//
 var hello = function hello() {
   return 'world';
-};
+};  
 
+function addTwo(num1, num2) {
+  return num1 + num2;
+}
 
 function addProfilePic(profilePicture) {
   $('img').attr('src', profilePicture);
@@ -62,7 +65,6 @@ function validateEmailAddress (emailAddress) {
       window.location.href = 'profile.html';
     } else {
       $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
-      return 'ERROR';
     }
   }
 

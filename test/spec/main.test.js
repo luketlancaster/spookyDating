@@ -1,5 +1,9 @@
 /* jshint mocha: true, expr: true, strict: false, undef: false */
 
+var fbUrl = 'https://spookydating.firebaseio.com';
+var fb = new Firebase(fbUrl);
+
+
 describe('test suite', function () {
   it('should assert true', function () {
     true.should.be.true;
@@ -12,12 +16,6 @@ describe('hello', function () {
     hello().should.equal('world');
   });
 });
-
-//beforeEach(function () {
-//    if (window.__karma__) {
-//      $('body').empty();
-//    }
-//});
 
 //describe('DOM', function () {
   //describe('form', function () {
@@ -53,8 +51,6 @@ describe('hello', function () {
   //});
 //});
 
-
-
 //describe('addProfilePic', function() {
   //before(function () {
     //if (window.__karma__) {
@@ -88,6 +84,7 @@ describe('validateEmailAddress', function() {
     validateEmailAddress(email2).should.be.true;
   });
 });
+
 describe('addProfilePic', function() {
   before(function () {
     if (window.__karma__) {
@@ -102,10 +99,32 @@ describe('addProfilePic', function() {
   });
 });
 
-describe('goToProfilePage', function() {
-  it('should redirect user to profile.html', function() {
-    goToProfilePage().should.equal('ERROR');
+describe('addUserInformationToProfile', function () {
+  before(function () {
+    if (window.__karma__) {
+      $('body').empty();
+      $('body').append('<div class="profile_info_holder"></div>');
+    };
+  });
+  it('should append profile info to the page', function() {
+    var profileInfo=( { name: 'vampire',
+                        bio: 'sucking blood',
+                        interests: 'anything but garlic' } );
+    var $divs = ('div');
+    $('div').length.should.equal(1);
+    addUserInformationToProfile(profileInfo);
+    $('div').length.should.equal(5);
   });
 });
 
+//describe('userLogin', function () {
+  //it('should log a user in', function(done) {
+     //var fbUrl = 'https://spookydating.firebaseio.com';
+     //var fb = new Firebase(fbUrl);
+     //var loginData = {email: 'a@b.com', password: '123456'};
+     //userLogin(loginData);
+     //fb.getAuth().password.email.should.contain('@');
+     //done();
+  //});
+//});
 

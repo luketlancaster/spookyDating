@@ -7,10 +7,6 @@ var hello = function hello() {
 };
 
 
-function addProfilePic(profilePicture) {
-  $('img').attr('src', profilePicture);
-}
-
 function validatePassword(password) {
   if (password.length > 5) {
     return true;
@@ -18,7 +14,6 @@ function validatePassword(password) {
     return false;
   }
 }
-
 function validateEmailAddress (emailAddress) {
   if (emailAddress.substring(emailAddress.length-4) === ".com") {
     return true;
@@ -99,12 +94,41 @@ function validateEmailAddress (emailAddress) {
       }
     });
   }
+  $('#submitUserDataToPage').click(function(event) {
+    console.log('#submitUserDataToPage was clicked, so you have that going for you');
+    event.preventDefault();
+    var userProfileName       = $('#userProfileName').val();
+    var userProfileBio        = $('#userProfileBio').val();
+    var userProfileInterests  = $('#userProfileInterests').val();
+    var userProfileImage      = $('#userProfileImage').val();
 
-  function addUserInformationToProfile(userInfo) {
-    $('.profile_info_holder').append('<div><div>' + userInfo.name +
-                                    '</div><div>' + userInfo.bio +
-                                    '</div><div>' + userInfo.interests +
+    var userInfo = { name: userProfileName,
+                     bio:  userProfileBio,
+                     interests: userProfileInterests
+                    };
+    addUserInformationToProfile(userInfo);
+    addProfilePic(userProfileImage);
+    $('#userProfileName').val('');
+    $('#userProfileBio').val('');
+    $('#userProfileInterests').val('');
+    $('#userProfileImage').val('');
+
+  });
+
+
+   function addUserInformationToProfile(userInfo) {
+    $('.profile_info_holder').append('<div><div>Name: ' + userInfo.name +
+                                    '</div><div>Bio: ' + userInfo.bio +
+                                    '</div><div>Interests: ' + userInfo.interests +
                                     '</div></div>');
+  }
+
+  function addProfilePic(profilePicture) {
+    $('.profile_picture').attr('src', profilePicture);
+  }
+
+  function emptyProfileForm(form) {
+    $('form').empty();
   }
 
   //LOGOUT FUNCTION//

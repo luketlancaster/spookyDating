@@ -20,26 +20,19 @@ html
         .profile_page_headers
           h1 Complete your profile, you ghoul!
         div
-          form
+          form(id="userProfileInfoForm")
             lable Name
-            input(type="text" placeholder="Name")
-            lable Email
-            input(type="email" placeholder="ghost@google.com")
+            input(id="userProfileName" type="text" placeholder="Name")
             lable Image
-            input(type="text" placeholder="Image URL")
+            input(id="userProfileImage" type="text" placeholder="Image URL")
             lable Bio
-            input(type="text" placeholder="I'm a pretty cool ghoul who loves the Monster Mash!")
+            input(id="userProfileBio" type="text" placeholder="I'm a pretty cool ghoul who loves the Monster Mash!")
             lable Interests
-            input(type="text" placeholder="haunting, being an apparition, floating")
-            button Submit
+            input(id="userProfileInterests" type="text" placeholder="haunting, being an apparition, floating")
+            button(id="submitUserDataToPage") Submit
 
-          div
+          div.profile_info_holder
             img.profile_picture(src="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035")
-            h3 Name:
-            .profile_bio
-              div Bio:
-            .profile_interests
-              div Interests:
 
     script(src="vendor/jquery.min.js")
     script(src="vendor/lodash.min.js")

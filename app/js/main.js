@@ -4,7 +4,7 @@
 //FUNCTIONS FOR TESTING//
 var hello = function hello() {
   return 'world';
-};  
+};
 
 function addTwo(num1, num2) {
   return num1 + num2;
@@ -80,7 +80,7 @@ function validateEmailAddress (emailAddress) {
       if (err) {
         $('.error').text(err);
       } else {
-        location.reload(true);
+        goToProfilePage();
       }
     });
   });

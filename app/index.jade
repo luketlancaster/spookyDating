@@ -1,0 +1,23 @@
+doctype html
+html
+
+  include partials/_head.jade
+
+  body
+    .row
+      .large-6.columns.large-offset-3
+        .login_screen_form
+          h1 Welcome to Spooooky Dating
+          h2 Login or register...if you dare!!!
+
+          form
+            input(id="loginEmail" type="email" placeholder="email")
+            input(id="loginPassword" type="password" placeholder="password")
+            input(id="login" type="button" value="Login" class="button")
+            input(id="createUser" type="button" value="Create Account" class="button")
+            .error
+
+  script(src="vendor/jquery.min.js")
+  script(src="vendor/lodash.min.js")
+  script(src="vendor/firebase.js")
+  script(src="js/main.js")

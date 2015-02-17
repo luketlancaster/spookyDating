@@ -35,5 +35,8 @@
     "mocha-phantomjs": "^3.5.3",
     "node-sass": "^2.0.1",
     "phantomjs": "^1.9.15"
+  },
+  "dependencies": {
+    "firebase": "^2.2.0"
   }
 }

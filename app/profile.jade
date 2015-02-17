@@ -4,8 +4,16 @@ html
   include partials/_head.jade
 
   body
-    include partials/_navbar.jade
-
+    .icon-bar.three-up
+      a(href="profile.html").item
+        img(src="http://cdn.flaticon.com/png/256/27653.png")
+        label Profile
+      a(href="match.html").item
+        img(src="http://cdn.flaticon.com/png/256/32441.png")
+        label Matches
+      a(href="index.html" id="logout").item
+        img(src="http://cdn.flaticon.com/png/256/27653.png")
+        label Logout
 
     .row
       .small-6.columns.small-offset-3
@@ -35,6 +43,6 @@ html
 
     script(src="vendor/jquery.min.js")
     script(src="vendor/lodash.min.js")
-    script(src="https://cdn.firebase.com/js/client/2.2.0/firebase.js")
+    script(src="vendor/firebase.js")
     script(src="js/main.js")
 

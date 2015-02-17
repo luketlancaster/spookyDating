@@ -1,7 +1,7 @@
 /* jshint node: true */
 'use strict';
 
-//$(document).ready(function() {
+$(document).ready(function() {
 
   var $form = $('.form');
   var $tbody = $('.tbody');
@@ -29,7 +29,7 @@
   //REDIRECT FUNCTION - LOGIN//
   function goToProfilePage() {
     if (fb.getAuth()) {
-      window.location.href = 'profile.html'
+      window.location.href = 'profile.html';
     } else {
       $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
     }
@@ -70,16 +70,14 @@
   }
 
   //LOGOUT FUNCTION//
-  //$('#logout').click(function logout() {
-    //fb.unauth();
-    //goToLoginPage();
-  //});
+  $('#logout').click(function logout() {
+    fb.unauth();
+  });
 
   //REDIRECT FUNCTION - LOGOUT//
   //function goToLoginPage() {
     //if (fb.unauth()) {
-      //window.location.href = 'index.html'
+      //window.location.href = 'index.html';
     //}
   //}
-
-//});
+});

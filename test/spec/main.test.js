@@ -13,12 +13,6 @@ describe('hello', function () {
   });
 });
 
-//beforeEach(function () {
-//    if (window.__karma__) {
-//      $('body').empty();
-//    }
-//});
-
 //describe('DOM', function () {
   //describe('form', function () {
     //before(function () {
@@ -111,6 +105,24 @@ describe('addProfilePic', function() {
   });
 });
 
+describe('addUserInformationToProfile', function () {
+  before(function () {
+    if (window.__karma__) {
+      $('body').empty();
+      $('body').append('<div class="profile_info_holder"></div>');
+    };
+  });
+  it('should append profile info to the page', function() {
+    var profileInfo=( { name: 'vampire',
+                        bio: 'sucking blood',
+                        interests: 'anything but garlic' } );
+    var $divs = ('div');
+    $('div').length.should.equal(1);
+    addUserInformationToProfile(profileInfo);
+    $('div').length.should.equal(5);
+  });
+});
+
 //describe('userLogin', function () {
   //it('should log a user in', function(done) {
      //var fbUrl = 'https://spookydating.firebaseio.com';
@@ -121,3 +133,4 @@ describe('addProfilePic', function() {
      //done();
   //});
 //});
+

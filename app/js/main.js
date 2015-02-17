@@ -105,6 +105,13 @@ function userLogin(loginData) {
     });
   }
 
+  function addUserInformationToProfile (userInfo) {
+    $('.profile_info_holder').append('<div><div>' + userInfo.name +
+                                    '</div><div>' + userInfo.bio +
+                                    '</div><div>' + userInfo.interests +
+                                    '</div></div>');
+  }
+
   //LOGOUT FUNCTION//
   //$('#logout').click(function logout() {
     //fb.unauth();

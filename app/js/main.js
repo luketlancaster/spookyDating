@@ -47,14 +47,14 @@ function validateEmailAddress (emailAddress) {
   });
 
   function userLogin(loginData) {
-  fb.authWithPassword(loginData, function(err, auth) {
-    if (err) {
-      $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
-    } else {
-      goToProfilePage();
-    }
-  });
- };
+    fb.authWithPassword(loginData, function(err, auth) {
+      if (err) {
+        $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
+      } else {
+        goToProfilePage();
+      }
+    });
+  };
 
   //REDIRECT FUNCTION - LOGIN//
   function goToProfilePage() {
@@ -111,6 +111,44 @@ function validateEmailAddress (emailAddress) {
   $('#logout').click(function logout() {
     fb.unauth();
   });
+
+
+  //FIND USERS NOT LIKED OR DISLIKED
+
+  function findUmatched(data, uid) {
+    var users      = _.keys(data),
+        myLikes    = usersLikes(data[uid].data),
+        myDislikes = usersDislikes(data[uid].data),
+        self       = [uid];
+
+    return _.difference(users, self, myLikes, myDislikes);
+  }
+
+  //FIND MATCHES
+
+  function matches(data, uid) {
+    var myLikes = usersLikes(data[uid].data);
+
+    return _.filter(myLikes, function(user, i) {
+      var userData = data[user].data,
+          userLikes = usersLikes(userData);
+
+      return _.includes(userLikes, uid);
+    });
+  }
+
+  function usersLikes(userData) {
+    if (userData && userData.likes) {
+      return _(userData.likes)
+      .values()
+      .map(function(user) {
+        return user.id;
+      })
+      .value();
+    } else {
+      return [];
+    }
+  }
 
   //REDIRECT FUNCTION - LOGOUT//
   //function goToLoginPage() {

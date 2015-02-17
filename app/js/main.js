@@ -1,13 +1,43 @@
 /* jshint node: true */
 'use strict';
 
-$(document).ready(function() {
+//FUNCTIONS FOR TESTING//
+var hello = function hello() {
+  return 'world';
+};  
+
+function addTwo(num1, num2) {
+  return num1 + num2;
+}
+
+function addProfilePic(profilePicture) {
+  $('img').attr('src', profilePicture);
+}
+
+function validatePassword(password) {
+  if (password.length > 5) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function validateEmailAddress (emailAddress) {
+  if (emailAddress.substring(emailAddress.length-4) === ".com") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+ //$(document).ready(function() {
 
   var $form = $('.form');
   var $tbody = $('.tbody');
   var fbUrl = 'https://spookydating.firebaseio.com';
   var fb = new Firebase(fbUrl);
   var usersFb;
+  var loginData;
 
   //LOGIN FUNCTION//
   $('#login').click(function(event) {
@@ -16,15 +46,18 @@ $(document).ready(function() {
     var email = $form.find('[type="email"]').val();
     var password = $form.find('[type="password"]').val();
     var loginData = {email: email, password: password};
-
-    fb.authWithPassword(loginData, function(err, auth) {
-      if (err) {
-        $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
-      } else {
-        goToProfilePage();
-      }
-    });
+    userLogin(loginData);
   });
+
+  function userLogin(loginData) {
+  fb.authWithPassword(loginData, function(err, auth) {
+    if (err) {
+      $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
+    } else {
+      goToProfilePage();
+    }
+  });
+ };
 
   //REDIRECT FUNCTION - LOGIN//
   function goToProfilePage() {
@@ -69,6 +102,13 @@ $(document).ready(function() {
     });
   }
 
+  function addUserInformationToProfile(userInfo) {
+    $('.profile_info_holder').append('<div><div>' + userInfo.name +
+                                    '</div><div>' + userInfo.bio +
+                                    '</div><div>' + userInfo.interests +
+                                    '</div></div>');
+  }
+
   //LOGOUT FUNCTION//
   $('#logout').click(function logout() {
     fb.unauth();
@@ -80,4 +120,4 @@ $(document).ready(function() {
       //window.location.href = 'index.html';
     //}
   //}
-});
+//});

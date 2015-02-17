@@ -96,14 +96,14 @@ describe('addTwo', function () {
 describe('addProfilePic', function() {
   before(function () {
     if (window.__karma__) {
-      $('body').append('<div><img src=""></div>')
+      $('body').append('<div><img class="profile_picture", src=""></div>')
       }
     });
   it('should upload a new profile picture', function() {
     var picture = 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS6H-zrpSy35X405e8Ske1fuYB_vQNcNP1pZDkf7mOQirUE9ee6oA';
-    $('img').attr('src').should.equal("");
+    $('.profile_picture').attr('src').should.equal("");
     addProfilePic(picture);
-    $('img').attr('src').should.equal(picture);
+    $('.profile_picture').attr('src').should.equal(picture);
   });
 });
 
@@ -124,6 +124,26 @@ describe('addUserInformationToProfile', function () {
     $('div').length.should.equal(5);
   });
 });
+
+//describe('emptyProfileForm', function () {
+  //before(function () {
+    //if (window.__karma__) {
+      //$('body').empty();
+      //$('body').append('<form>' +
+                       //'<input type="text", value="Chocula">' +
+                       //'<input type="text", value="imgUrl">' +
+                       //'<input type="text", value="Creator of Choclolate-y breakfast">' +
+                       //'<input type="text", value="Chocolate, breakfast, etc.">' +
+                       //'</form>');
+    //};
+  //});
+    //var $input = $('input');
+  //it('should empty the user profile information form', function() {
+    //$($input[0]).text().should.equal('Chocula');
+    //emptyProfileForm();
+    //$($input[2]).text().should.equal('');
+  //});
+//});
 
 //describe('userLogin', function () {
   //it('should log a user in', function(done) {

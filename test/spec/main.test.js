@@ -1,5 +1,9 @@
 /* jshint mocha: true, expr: true, strict: false, undef: false */
 
+var fbUrl = 'https://spookydating.firebaseio.com';
+var fb = new Firebase(fbUrl);
+
+
 describe('test suite', function () {
   it('should assert true', function () {
     true.should.be.true;
@@ -47,8 +51,6 @@ describe('hello', function () {
   //});
 //});
 
-
-
 //describe('addProfilePic', function() {
   //before(function () {
     //if (window.__karma__) {
@@ -80,14 +82,6 @@ describe('validateEmailAddress', function() {
     var email2="countChocula@gmail.com";
     validateEmailAddress(email1).should.be.false;
     validateEmailAddress(email2).should.be.true;
-  });
-});
-
-describe('addTwo', function () {
-  it('should add two numbers', function () {
-  var num1 = 2;
-  var num2 = 4;
-  addTwo(num1, num2).should.equal(6);
   });
 });
 

@@ -1,25 +1,17 @@
 /* jshint node: true */
 'use strict';
 
-//var fb = new Firebase('https://spookydating.firebaseio.com/');
-
+//FUNCTIONS FOR TESTING//
 var hello = function hello() {
   return 'world';
 };
 
-function addTwo(num1, num2) {
-  return num1 + num2;
-}
 
-//var profilePicture = $('.profile_picture').val();
-
-
-
-function addProfilePic (profilePicture) {
+function addProfilePic(profilePicture) {
   $('img').attr('src', profilePicture);
 }
 
-function validatePassword (password) {
+function validatePassword(password) {
   if (password.length > 5) {
     return true;
   } else {
@@ -34,7 +26,8 @@ function validateEmailAddress (emailAddress) {
     return false;
   }
 }
-//$(document).ready(function() {
+
+ //$(document).ready(function() {
 
   var $form = $('.form');
   var $tbody = $('.tbody');
@@ -51,8 +44,9 @@ function validateEmailAddress (emailAddress) {
     var password = $form.find('[type="password"]').val();
     var loginData = {email: email, password: password};
     userLogin(loginData);
-});
-function userLogin(loginData) {
+  });
+
+  function userLogin(loginData) {
   fb.authWithPassword(loginData, function(err, auth) {
     if (err) {
       $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
@@ -65,9 +59,10 @@ function userLogin(loginData) {
   //REDIRECT FUNCTION - LOGIN//
   function goToProfilePage() {
     if (fb.getAuth()) {
-      window.location.href = 'profile.html'
+      window.location.href = 'profile.html';
     } else {
       $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
+      return 'ERROR';
     }
   }
 
@@ -105,7 +100,7 @@ function userLogin(loginData) {
     });
   }
 
-  function addUserInformationToProfile (userInfo) {
+  function addUserInformationToProfile(userInfo) {
     $('.profile_info_holder').append('<div><div>' + userInfo.name +
                                     '</div><div>' + userInfo.bio +
                                     '</div><div>' + userInfo.interests +
@@ -113,16 +108,14 @@ function userLogin(loginData) {
   }
 
   //LOGOUT FUNCTION//
-  //$('#logout').click(function logout() {
-    //fb.unauth();
-    //goToLoginPage();
-  //});
+  $('#logout').click(function logout() {
+    fb.unauth();
+  });
 
   //REDIRECT FUNCTION - LOGOUT//
   //function goToLoginPage() {
     //if (fb.unauth()) {
-      //window.location.href = 'index.html'
+      //window.location.href = 'index.html';
     //}
   //}
-
 //});

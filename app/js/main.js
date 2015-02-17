@@ -7,7 +7,7 @@ var hello = function hello() {
   return 'world';
 };
 
-var profilePicture = $('.profile_picture').val();
+//var profilePicture = $('.profile_picture').val();
 
 function addProfilePic (profilePicture) {
   $('img').attr('src', profilePicture);
@@ -59,6 +59,7 @@ function validateEmailAddress (emailAddress) {
       window.location.href = 'profile.html'
     } else {
       $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
+      return 'ERROR';
     }
   }
 

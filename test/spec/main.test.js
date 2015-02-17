@@ -86,6 +86,8 @@ describe('validateEmailAddress', function() {
     var email2="countChocula@gmail.com";
     validateEmailAddress(email1).should.be.false;
     validateEmailAddress(email2).should.be.true;
+  });
+});
 describe('addProfilePic', function() {
   before(function () {
     if (window.__karma__) {
@@ -95,8 +97,15 @@ describe('addProfilePic', function() {
   it('should upload a new profile picture', function() {
     var picture = 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS6H-zrpSy35X405e8Ske1fuYB_vQNcNP1pZDkf7mOQirUE9ee6oA';
     $('img').attr('src').should.equal("");
-    addProfilePic();
+    addProfilePic(picture);
     $('img').attr('src').should.equal(picture);
   });
 });
+
+describe('goToProfilePage', function() {
+  it('should redirect user to profile.html', function() {
+    goToProfilePage().should.equal('ERROR');
+  });
+});
+
 

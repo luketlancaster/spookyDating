@@ -120,6 +120,7 @@ function validateEmailAddress (emailAddress) {
     $('#userProfileBio').val('');
     $('#userProfileInterests').val('');
 
+    $('#add_profile_info').toggleClass('hidden');
   });
 
   //PUSH TO DB FUNCTION//

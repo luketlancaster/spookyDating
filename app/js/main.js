@@ -113,9 +113,29 @@ function validateEmailAddress (emailAddress) {
   });
 
 
-  //FIND USERS NOT LIKED OR DISLIKED
 
-  function findUmatched(data, uid) {
+  fb.child('users').once('value', function(snap) {
+    var data = snap.val();
+
+    console.log('Undecided simplelogin:2', undecided(data, 'simplelogin:2'));
+  });
+
+  //LIKE EVENT
+  $('#like').on('click', function(evt) {
+    evt.preventDefault();
+
+    var likedUuid = $('#matchImage').attr('data-uuid').val();
+
+    likeUser(likedUuid);
+  });
+
+  function likeUser(data, cb) {
+    var uuid = usersFb.push(data).key();
+    cb({ liked: uuid });
+  }
+
+  //FIND USERS NOT LIKED OR DISLIKED
+  function findUmatched(data, uuid) {
     var users      = _.keys(data),
         myLikes    = usersLikes(data[uid].data),
         myDislikes = usersDislikes(data[uid].data),
@@ -125,26 +145,38 @@ function validateEmailAddress (emailAddress) {
   }
 
   //FIND MATCHES
-
-  function matches(data, uid) {
-    var myLikes = usersLikes(data[uid].data);
+  function matches(data, uuid) {
+    var myLikes = usersLikes(data[uuid].data);
 
     return _.filter(myLikes, function(user, i) {
       var userData = data[user].data,
           userLikes = usersLikes(userData);
 
-      return _.includes(userLikes, uid);
+      return _.includes(userLikes, uuid);
     });
   }
 
   function usersLikes(userData) {
     if (userData && userData.likes) {
       return _(userData.likes)
-      .values()
-      .map(function(user) {
-        return user.id;
-      })
-      .value();
+        .values()
+        .map(function(user) {
+          return user.id;
+        })
+        .value();
+    } else {
+      return [];
+    }
+  }
+
+  function usersDislikes(userData) {
+    if (userData && userData.dislikes) {
+      return _(userData.dislikes)
+        .values()
+        .map(function(user) {
+          return user.id;
+        })
+        .value();
     } else {
       return [];
     }

@@ -7,10 +7,6 @@ var hello = function hello() {
 };
 
 
-function addProfilePic(profilePicture) {
-  $('img').attr('src', profilePicture);
-}
-
 function validatePassword(password) {
   if (password.length > 5) {
     return true;
@@ -18,7 +14,6 @@ function validatePassword(password) {
     return false;
   }
 }
-
 function validateEmailAddress (emailAddress) {
   if (emailAddress.substring(emailAddress.length-4) === ".com") {
     return true;
@@ -33,6 +28,7 @@ function validateEmailAddress (emailAddress) {
   var $tbody = $('.tbody');
   var fbUrl = 'https://spookydating.firebaseio.com';
   var fb = new Firebase(fbUrl);
+  var default_picture ="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
   var usersFb;
   var loginData;
 
@@ -78,7 +74,7 @@ function validateEmailAddress (emailAddress) {
       if (err) {
         $('.error').text(err);
       } else {
-        location.reload(true);
+        goToProfilePage();
       }
     });
   });
@@ -100,18 +96,95 @@ function validateEmailAddress (emailAddress) {
     });
   }
 
+  //APPEND TO PROFILE AND PUSH TO FIREBASE//
+  $('#submitUserDataToPage').click(function(event) {
+    event.preventDefault();
+    var userProfileName       = $('#userProfileName').val();
+    var userProfileImage      = $('#userProfileImage').val();
+    var userProfileBio        = $('#userProfileBio').val();
+    var userProfileInterests  = $('#userProfileInterests').val();
+
+    var userInfo = { name: userProfileName,
+                     image: userProfileImage,
+                     bio:  userProfileBio,
+                     interests: userProfileInterests
+                    };
+
+    addUserToDatabase(userInfo, function(data) {
+      $('.profile_info_holder').attr('data-uuid', data.name);
+    });
+
+    addUserInformationToProfile(userInfo);
+    $('#userProfileName').val('');
+    $('#userProfileImage').val('');
+    $('#userProfileBio').val('');
+    $('#userProfileInterests').val('');
+
+    $('#add_profile_info').toggleClass('hidden');
+  });
+
+  //PUSH TO DB FUNCTION//
+  function addUserToDatabase(data, cb) {
+    usersFb = fb.child('users/' + fb.getAuth().uid + '/data');
+    var uuid = usersFb.push(data).key();
+    cb({ name: uuid });
+  }
+
+  //APPEND PROFILE PICTURE TO PAGE//
+  //function addProfilePic(profilePicture) {
+    //$('.profile_picture').attr('src', profilePicture);
+  //}
+
+
+  //APPEND PROFILE INFO TO PAGE//
   function addUserInformationToProfile(userInfo) {
-    $('.profile_info_holder').append('<div><div>' + userInfo.name +
-                                    '</div><div>' + userInfo.bio +
-                                    '</div><div>' + userInfo.interests +
+    $('.profile_info_holder').append('<div><img src="' + userInfo.image +
+                                    '" class=profile_picture default_picture"><div>Name: ' + userInfo.name +
+                                    '</div><div>Bio: ' + userInfo.bio +
+                                    '</div><div>Interests: ' + userInfo.interests +
                                     '</div></div>');
+
+    $(".default_picture").error(function() {
+      $(this).attr('src', default_picture);
+    });
+  }
+
+  //CLEAR FORM//
+  function emptyProfileForm(form) {
+    $('form').empty();
+  }
+
+
+  //PULL PROFILE INFO ONTO PAGE FROM FIREBASE//
+  function pullUserInformationFromFb(uuid, data) {
+    $('.profile_info_holder').append('<div><img src="' + data.image +
+                                    '" class="profile_picture default_picture"><div>Name: ' + data.name +
+                                    '</div><div>Bio: ' + data.bio +
+                                    '</div><div>Interests: ' + data.interests +
+                                    '</div></div>');
+
+    $(".default_picture").error(function() {
+      $(this).attr('src', default_picture);
+    });
+   }
+
+
+  //PULL FROM DB FUNCTION//
+  if(fb.getAuth()) {
+    usersFb = fb.child('users/' + fb.getAuth().uid + '/data');
+
+    usersFb.once('value', function(data) {
+      var profileInfo = data.val();
+      Object.keys(profileInfo).forEach(function(uuid) {
+        pullUserInformationFromFb(uuid, profileInfo[uuid]);
+      });
+    });
   }
 
   //LOGOUT FUNCTION//
   $('#logout').click(function logout() {
     fb.unauth();
   });
-
 
 
   fb.child('users').once('value', function(snap) {

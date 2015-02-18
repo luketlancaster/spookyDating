@@ -99,15 +99,10 @@ function validateEmailAddress (emailAddress) {
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
     event.preventDefault();
-    var userProfileName       = $('#userProfileName').val();
-    var userProfileImage      = $('#userProfileImage').val();
-    var userProfileBio        = $('#userProfileBio').val();
-    var userProfileInterests  = $('#userProfileInterests').val();
-
-    var userInfo = { name: userProfileName,
-                     image: userProfileImage,
-                     bio:  userProfileBio,
-                     interests: userProfileInterests
+    var userInfo = { name: $('#userProfileName').val(),
+                     image: $('#userProfileImage').val(),
+                     bio: $('#userProfileBio').val(),
+                     interests: $('#userProfileInterests').val()
                     };
 
     addUserToDatabase(userInfo, function(data) {
@@ -185,8 +180,6 @@ function validateEmailAddress (emailAddress) {
   $('#logout').click(function logout() {
     fb.unauth();
   });
-
-
 
   fb.child('users').once('value', function(snap) {
     var data = snap.val();

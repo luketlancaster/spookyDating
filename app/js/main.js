@@ -125,7 +125,7 @@ function validateEmailAddress (emailAddress) {
 
   //PUSH TO DB FUNCTION//
   function addUserToDatabase(data, cb) {
-    usersFb = fb.child('users/' + fb.getAuth().uid + '/data');
+    usersFb = fb.child('users/' + fb.getAuth().uid + '/data/profileInfo');
     var uuid = usersFb.push(data).key();
     cb({ name: uuid });
   }
@@ -171,7 +171,7 @@ function validateEmailAddress (emailAddress) {
 
   //PULL FROM DB FUNCTION//
   if(fb.getAuth()) {
-    usersFb = fb.child('users/' + fb.getAuth().uid + '/data');
+    usersFb = fb.child('users/' + fb.getAuth().uid + '/data/profileInfo');
 
     usersFb.once('value', function(data) {
       var profileInfo = data.val();
@@ -193,19 +193,20 @@ function validateEmailAddress (emailAddress) {
     console.log('Undecided simplelogin:2', undecided(data, 'simplelogin:2'));
   });
 
+
   //LIKE EVENT
-  $('#like').on('click', function(evt) {
-    evt.preventDefault();
+  //$('#like').on('click', function(evt) {
+    //evt.preventDefault();
 
-    var likedUuid = $('#matchImage').attr('data-uuid').val();
+    //var likedUuid = $('#matchImage').attr('data-uuid').val();
 
-    likeUser(likedUuid);
-  });
+    //likeUser(likedUuid);
+  //});
 
-  function likeUser(data, cb) {
-    var uuid = usersFb.push(data).key();
-    cb({ liked: uuid });
-  }
+  //function likeUser(data, cb) {
+    //var uuid = usersFb.push(data).key();
+    //cb({ liked: uuid });
+  //}
 
   //FIND USERS NOT LIKED OR DISLIKED
   function findUmatched(data, uuid) {
@@ -260,6 +261,7 @@ function validateEmailAddress (emailAddress) {
     window.location.href = 'index.html';
   });
 
+<<<<<<< HEAD
 
   //REDIRECT FUNCTION - LOGOUT//
   //function goToLoginPage() {
@@ -267,4 +269,6 @@ function validateEmailAddress (emailAddress) {
       //window.location.href = 'index.html';
     //}
   //}
+=======
+>>>>>>> 87f461141f01370a7a61b8af01899f80d154bd88
 //});

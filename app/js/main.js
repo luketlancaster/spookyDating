@@ -31,6 +31,7 @@ function validateEmailAddress (emailAddress) {
   var default_picture ="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
   var usersFb;
   var loginData;
+  var userListSnapshot;
 
   //LOGIN FUNCTION//
   $('#login').click(function(event) {
@@ -187,10 +188,10 @@ function validateEmailAddress (emailAddress) {
   });
 
   fb.child('users').once('value', function(snap) {
-    var data = snap.val();
+    var userListSnapshot = snap.val();
 
-    console.log('Undecided simplelogin:2', undecided(data, 'simplelogin:2'));
-  });
+    console.log(userListSnapshot);
+  })();
 
 
   //LIKE EVENT
@@ -208,7 +209,7 @@ function validateEmailAddress (emailAddress) {
   //}
 
   //FIND USERS NOT LIKED OR DISLIKED
-  function findUmatched(data, uuid) {
+  function findUnmatched(data, uid) {
     var users      = _.keys(data),
         myLikes    = usersLikes(data[uid].data),
         myDislikes = usersDislikes(data[uid].data),

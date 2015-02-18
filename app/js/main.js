@@ -28,6 +28,7 @@ function validateEmailAddress (emailAddress) {
   var $tbody = $('.tbody');
   var fbUrl = 'https://spookydating.firebaseio.com';
   var fb = new Firebase(fbUrl);
+  var default_picture ="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
   var usersFb;
   var loginData;
 
@@ -97,7 +98,6 @@ function validateEmailAddress (emailAddress) {
 
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
-    console.log('#submitUserDataToPage was clicked, so you have that going for you');
     event.preventDefault();
     var userProfileName       = $('#userProfileName').val();
     var userProfileImage      = $('#userProfileImage').val();
@@ -115,12 +115,12 @@ function validateEmailAddress (emailAddress) {
     });
 
     addUserInformationToProfile(userInfo);
-    addProfilePic(userProfileImage);
     $('#userProfileName').val('');
     $('#userProfileImage').val('');
     $('#userProfileBio').val('');
     $('#userProfileInterests').val('');
-    });
+
+  });
 
   //PUSH TO DB FUNCTION//
   function addUserToDatabase(data, cb) {
@@ -130,17 +130,22 @@ function validateEmailAddress (emailAddress) {
   }
 
   //APPEND PROFILE PICTURE TO PAGE//
-  function addProfilePic(profilePicture) {
-    $('.profile_picture').attr('src', profilePicture);
-  }
+  //function addProfilePic(profilePicture) {
+    //$('.profile_picture').attr('src', profilePicture);
+  //}
 
 
   //APPEND PROFILE INFO TO PAGE//
   function addUserInformationToProfile(userInfo) {
-    $('.profile_info_holder').append('<div><div>Name: ' + userInfo.name +
+    $('.profile_info_holder').append('<div><img src="' + userInfo.image +
+                                    '" class=profile_picture default_picture"><div>Name: ' + userInfo.name +
                                     '</div><div>Bio: ' + userInfo.bio +
                                     '</div><div>Interests: ' + userInfo.interests +
                                     '</div></div>');
+
+    $(".default_picture").error(function() {
+      $(this).attr('src', default_picture);
+    });
   }
 
   //CLEAR FORM//
@@ -151,13 +156,16 @@ function validateEmailAddress (emailAddress) {
 
   //PULL PROFILE INFO ONTO PAGE FROM FIREBASE//
   function pullUserInformationFromFb(uuid, data) {
-    $('.profile_info_holder').append('<div><div>Name: ' + data.name +
+    $('.profile_info_holder').append('<div><img src="' + data.image +
+                                    '" class="profile_picture default_picture"><div>Name: ' + data.name +
                                     '</div><div>Bio: ' + data.bio +
                                     '</div><div>Interests: ' + data.interests +
                                     '</div></div>');
 
-    //$('.profile_picture').append('<div><img src="' + data.image + '"></div>');
-  }
+    $(".default_picture").error(function() {
+      $(this).attr('src', default_picture);
+    });
+   }
 
 
   //PULL FROM DB FUNCTION//
@@ -177,10 +185,4 @@ function validateEmailAddress (emailAddress) {
     fb.unauth();
   });
 
-  //REDIRECT FUNCTION - LOGOUT//
-  //function goToLoginPage() {
-    //if (fb.unauth()) {
-      //window.location.href = 'index.html';
-    //}
-  //}
 //});

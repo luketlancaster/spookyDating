@@ -182,6 +182,12 @@ function validateEmailAddress (emailAddress) {
     }
   }
 
+  $('#logout').click(function() {
+    fb.unauth();
+    window.location.href = 'index.html';
+  });
+
+
   //REDIRECT FUNCTION - LOGOUT//
   //function goToLoginPage() {
     //if (fb.unauth()) {

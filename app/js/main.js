@@ -185,7 +185,6 @@ function validateEmailAddress (emailAddress) {
   fb.child('users').once('value', function(snap) {
     var userListSnapshot = snap.val();
 
-    console.log(userListSnapshot);
   })();
 
 

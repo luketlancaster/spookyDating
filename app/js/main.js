@@ -32,6 +32,8 @@ function validateEmailAddress (emailAddress) {
   var usersFb;
   var loginData;
   var userListSnapshot;
+  var undecidedUsers = [];
+  var userInfo;
 
   //LOGIN FUNCTION//
   $('#login').click(function(event) {
@@ -41,6 +43,7 @@ function validateEmailAddress (emailAddress) {
     var password = $form.find('[type="password"]').val();
     var loginData = {email: email, password: password};
     userLogin(loginData);
+
   });
 
   function userLogin(loginData) {
@@ -100,10 +103,13 @@ function validateEmailAddress (emailAddress) {
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
     event.preventDefault();
-    var userInfo = { name: $('#userProfileName').val(),
+     userInfo = { name: $('#userProfileName').val(),
                      image: $('#userProfileImage').val(),
                      bio: $('#userProfileBio').val(),
                      interests: $('#userProfileInterests').val(),
+                     likes: [],
+                     dislikes: [],
+                     undecided: []
                     };
 
     addUserToDatabase(userInfo, function(data) {
@@ -154,7 +160,6 @@ function validateEmailAddress (emailAddress) {
                                     '</div><div>Bio: ' + data.bio +
                                     '</div><div>Interests: ' + data.interests +
                                     '</div></div>');
-    debugger;
 
     $(".default_picture").error(function() {
       $(this).attr('src', default_picture);
@@ -170,13 +175,20 @@ function validateEmailAddress (emailAddress) {
       var profileInfo = data.val();
         pullUserInformationFromFb(profileInfo);
     });
+     //GET USER OBJECT//
+    fb.child('users').once('value', function(snap) {
+      var userListSnapshot = snap.val();
+      _.forEach(userListSnapshot, function(user) {
+        undecidedUsers.push(user);
+      });
+      $('.potentialMatch').append('<div><img src="' + undecidedUsers[0].image + '"></div>' );
+    });
   }
 
-  //GET USER OBJECT//
-  fb.child('users').once('value', function(snap) {
-
-    var data = snap.val();
-  });
+  //$('#like_match').click(function() {
+    //debugger;
+    //userInfo.likes.push(undecidedUsers.shift());
+  //});
 
   function appendProspects(uuid, data) {
     ('.potentialMatch').append('<div><img src="' + data.profileInfo.image +
@@ -196,26 +208,6 @@ function validateEmailAddress (emailAddress) {
     });
   }
 
-
-  //CLICK EVENT - LIKES//
-  //$('#like').click(function(event) {
-    //event.preventDefault();
-
-  //});
-  //
-  //  //LIKE EVENT
-  //$('#like').on('click', function(evt) {
-    //evt.preventDefault();
-
-    //var likedUuid = $('#matchImage').attr('data-uuid').val();
-
-    //likeUser(likedUuid);
-  //});
-
-  //function likeUser(data, cb) {
-    //var uuid = usersFb.push(data).key();
-    //cb({ liked: uuid });
-  //}
 
 
 

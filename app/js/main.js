@@ -7,7 +7,7 @@ var hello = function hello() {
 };
 
 
-function validatePassword(password) {
+function validatePassword (password) {
   if (password.length > 5) {
     return true;
   } else {
@@ -22,7 +22,7 @@ function validateEmailAddress (emailAddress) {
   }
 }
 
- //$(document).ready(function() {
+//$(document).ready(function() {
 
   var $form = $('.form');
   var $tbody = $('.tbody');
@@ -31,6 +31,7 @@ function validateEmailAddress (emailAddress) {
   var default_picture ="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
   var usersFb;
   var loginData;
+  var userListSnapshot;
 
   //LOGIN FUNCTION//
   $('#login').click(function(event) {
@@ -99,19 +100,15 @@ function validateEmailAddress (emailAddress) {
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
     event.preventDefault();
-    var userProfileName       = $('#userProfileName').val();
-    var userProfileImage      = $('#userProfileImage').val();
-    var userProfileBio        = $('#userProfileBio').val();
-    var userProfileInterests  = $('#userProfileInterests').val();
-
-    var userInfo = { name: userProfileName,
-                     image: userProfileImage,
-                     bio:  userProfileBio,
-                     interests: userProfileInterests
+    var userInfo = { name: $('#userProfileName').val(),
+                     image: $('#userProfileImage').val(),
+                     bio: $('#userProfileBio').val(),
+                     interests: $('#userProfileInterests').val(),
                     };
 
     addUserToDatabase(userInfo, function(data) {
-      $('.profile_info_holder').attr('data-uuid', data.name);
+      $('.profile_info_holder').attr('data-uuid', data);
+      userInfo.uuid = data;
     });
 
     addUserInformationToProfile(userInfo);
@@ -125,15 +122,10 @@ function validateEmailAddress (emailAddress) {
 
   //PUSH TO DB FUNCTION//
   function addUserToDatabase(data, cb) {
-    usersFb = fb.child('users/' + fb.getAuth().uid + '/data/profileInfo');
-    var uuid = usersFb.push(data).key();
-    cb({ name: uuid });
+    usersFb = fb.child('users/' + fb.getAuth().uid);
+    var uuid = usersFb.set(data);
+    cb(uuid);
   }
-
-  //APPEND PROFILE PICTURE TO PAGE//
-  //function addProfilePic(profilePicture) {
-    //$('.profile_picture').attr('src', profilePicture);
-  //}
 
 
   //APPEND PROFILE INFO TO PAGE//
@@ -156,12 +148,13 @@ function validateEmailAddress (emailAddress) {
 
 
   //PULL PROFILE INFO ONTO PAGE FROM FIREBASE//
-  function pullUserInformationFromFb(uuid, data) {
+  function pullUserInformationFromFb(data) {
     $('.profile_info_holder').append('<div><img src="' + data.image +
                                     '" class="profile_picture default_picture"><div>Name: ' + data.name +
                                     '</div><div>Bio: ' + data.bio +
                                     '</div><div>Interests: ' + data.interests +
                                     '</div></div>');
+    debugger;
 
     $(".default_picture").error(function() {
       $(this).attr('src', default_picture);
@@ -171,30 +164,46 @@ function validateEmailAddress (emailAddress) {
 
   //PULL FROM DB FUNCTION//
   if(fb.getAuth()) {
-    usersFb = fb.child('users/' + fb.getAuth().uid + '/data/profileInfo');
+    usersFb = fb.child('users/' + fb.getAuth().uid);
 
     usersFb.once('value', function(data) {
       var profileInfo = data.val();
-      Object.keys(profileInfo).forEach(function(uuid) {
-        pullUserInformationFromFb(uuid, profileInfo[uuid]);
+        pullUserInformationFromFb(profileInfo);
+    });
+  }
+
+  //GET USER OBJECT//
+  fb.child('users').once('value', function(snap) {
+
+    var data = snap.val();
+  });
+
+  function appendProspects(uuid, data) {
+    ('.potentialMatch').append('<div><img src="' + data.profileInfo.image +
+                               '" class="profile_picture default_picture"><div>Name: ' + data.profileInfo.name +
+                               '</div><div>Bio: ' + data.profileInfo.bio +
+                               '</div><div>Interests: ' + data.profileInfo.interests +
+                               '</div></div>');
+    ('.potentialMatch').attr('data-uuid', uuid);
+  }
+
+  function seeProspects() {
+    usersFb = fb.child('users');
+    usersFb.once('value', function(data) {
+      Object.keys(data.val()).forEach(function(uuid) {
+        appendProspects(uuid, data.val()[uuid]);
       });
     });
   }
 
-  //LOGOUT FUNCTION//
-  $('#logout').click(function logout() {
-    fb.unauth();
-  });
 
+  //CLICK EVENT - LIKES//
+  //$('#like').click(function(event) {
+    //event.preventDefault();
 
-  fb.child('users').once('value', function(snap) {
-    var data = snap.val();
-
-    console.log('Undecided simplelogin:2', undecided(data, 'simplelogin:2'));
-  });
-
-
-  //LIKE EVENT
+  //});
+  //
+  //  //LIKE EVENT
   //$('#like').on('click', function(evt) {
     //evt.preventDefault();
 
@@ -208,15 +217,18 @@ function validateEmailAddress (emailAddress) {
     //cb({ liked: uuid });
   //}
 
-  //FIND USERS NOT LIKED OR DISLIKED
-  function findUmatched(data, uuid) {
-    var users      = _.keys(data),
-        myLikes    = usersLikes(data[uuid].data),
-        myDislikes = usersDislikes(data[uuid].data),
-        self       = [uuid];
 
-    return _.difference(users, self, myLikes, myDislikes);
-  }
+
+  //FIND UNMATCHED USERS//
+  function findUnmatched(data, uuid) {
+
+    var users      = _.keys(data);
+    var myLikes    = usersLikes(data[uuid].data);
+    var myDislikes = usersDislikes(data[uuid].data);
+    var self       = [uuid];
+
+    return_.difference(users, self, myLikes, myDislikes);
+  };
 
   //FIND MATCHES
   function matches(data, uuid) {
@@ -256,7 +268,9 @@ function validateEmailAddress (emailAddress) {
     }
   }
 
+  //LOGOUT FUNCTION//
   $('#logout').click(function() {
     fb.unauth();
     window.location.href = 'index.html';
   });
+//});

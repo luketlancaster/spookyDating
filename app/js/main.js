@@ -33,7 +33,9 @@ function validateEmailAddress (emailAddress) {
   var loginData;
   var userListSnapshot;
   var undecidedUsers = [];
+  var profileInfo;
   var userInfo;
+  var currentShowingUser;
 
   //LOGIN FUNCTION//
   $('#login').click(function(event) {
@@ -172,12 +174,15 @@ function validateEmailAddress (emailAddress) {
     usersFb = fb.child('users/' + fb.getAuth().uid);
 
     usersFb.once('value', function(data) {
-      var profileInfo = data.val();
-        pullUserInformationFromFb(profileInfo);
+      profileInfo = data.val();
+      profileInfo.likes = [];
+      profileInfo.dislikes = [];
+      pullUserInformationFromFb(profileInfo);
     });
+
      //GET USER OBJECT//
     fb.child('users').once('value', function(snap) {
-      var userListSnapshot = snap.val();
+      userListSnapshot = snap.val();
       _.forEach(userListSnapshot, function(user) {
         undecidedUsers.push(user);
       });
@@ -185,10 +190,10 @@ function validateEmailAddress (emailAddress) {
     });
   }
 
-  //$('#like_match').click(function() {
-    //debugger;
-    //userInfo.likes.push(undecidedUsers.shift());
-  //});
+  $('#like_match').on('click', function() {
+      //profileInfo.likes.push(this);
+    console.log(_.keys(userListSnapshot));
+  });
 
   function appendProspects(uuid, data) {
     ('.potentialMatch').append('<div><img src="' + data.profileInfo.image +

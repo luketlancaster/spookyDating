@@ -211,9 +211,9 @@ function validateEmailAddress (emailAddress) {
   //FIND USERS NOT LIKED OR DISLIKED
   function findUmatched(data, uuid) {
     var users      = _.keys(data),
-        myLikes    = usersLikes(data[uid].data),
-        myDislikes = usersDislikes(data[uid].data),
-        self       = [uid];
+        myLikes    = usersLikes(data[uuid].data),
+        myDislikes = usersDislikes(data[uuid].data),
+        self       = [uuid];
 
     return _.difference(users, self, myLikes, myDislikes);
   }
@@ -260,15 +260,3 @@ function validateEmailAddress (emailAddress) {
     fb.unauth();
     window.location.href = 'index.html';
   });
-
-<<<<<<< HEAD
-
-  //REDIRECT FUNCTION - LOGOUT//
-  //function goToLoginPage() {
-    //if (fb.unauth()) {
-      //window.location.href = 'index.html';
-    //}
-  //}
-=======
->>>>>>> 87f461141f01370a7a61b8af01899f80d154bd88
-//});

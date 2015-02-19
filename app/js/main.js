@@ -31,6 +31,7 @@ function validateEmailAddress (emailAddress) {
   var default_picture ="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
   var usersFb;
   var loginData;
+  var userListSnapshot;
 
   //LOGIN FUNCTION//
   $('#login').click(function(event) {
@@ -99,15 +100,10 @@ function validateEmailAddress (emailAddress) {
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
     event.preventDefault();
-    var userProfileName       = $('#userProfileName').val();
-    var userProfileImage      = $('#userProfileImage').val();
-    var userProfileBio        = $('#userProfileBio').val();
-    var userProfileInterests  = $('#userProfileInterests').val();
-
-    var userInfo = { name: userProfileName,
-                     image: userProfileImage,
-                     bio:  userProfileBio,
-                     interests: userProfileInterests
+    var userInfo = { name: $('#userProfileName').val(),
+                     image: $('#userProfileImage').val(),
+                     bio: $('#userProfileBio').val(),
+                     interests: $('#userProfileInterests').val()
                     };
 
     addUserToDatabase(userInfo, function(data) {
@@ -177,8 +173,9 @@ function validateEmailAddress (emailAddress) {
 
   //GET USER OBJECT//
   fb.child('users').once('value', function(snap) {
-    var data = snap.val();
-  });
+    var userListSnapshot = snap.val();
+  })();
+
 
   function appendProspects(uuid, data) {
     ('.potentialMatch').append('<div><img src="' + data.profileInfo.image +
@@ -218,8 +215,6 @@ function validateEmailAddress (emailAddress) {
     //var uuid = usersFb.push(data).key();
     //cb({ liked: uuid });
   //}
-
-
 
   //FIND UNMATCHED USERS//
   function findUnmatched(data, uuid) {
@@ -280,4 +275,11 @@ function validateEmailAddress (emailAddress) {
     window.location.href = 'index.html';
   });
 
+
+  //REDIRECT FUNCTION - LOGOUT//
+  //function goToLoginPage() {
+    //if (fb.unauth()) {
+      //window.location.href = 'index.html';
+    //}
+  //}
 //});

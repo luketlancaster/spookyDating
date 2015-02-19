@@ -7,7 +7,7 @@ var hello = function hello() {
 };
 
 
-function validatePassword(password) {
+function validatePassword (password) {
   if (password.length > 5) {
     return true;
   } else {
@@ -121,15 +121,12 @@ function validateEmailAddress (emailAddress) {
 
   //PUSH TO DB FUNCTION//
   function addUserToDatabase(data, cb) {
-    usersFb = fb.child('users/' + fb.getAuth().uid + '/data/profileInfo');
+    usersFb = fb.child('users/' + fb.getAuth().uid);
     var uuid = usersFb.push(data).key();
     cb({ name: uuid });
   }
 
-  //APPEND PROFILE PICTURE TO PAGE//
-  //function addProfilePic(profilePicture) {
-    //$('.profile_picture').attr('src', profilePicture);
-  //}
+
 
 
   //APPEND PROFILE INFO TO PAGE//
@@ -167,7 +164,7 @@ function validateEmailAddress (emailAddress) {
 
   //PULL FROM DB FUNCTION//
   if(fb.getAuth()) {
-    usersFb = fb.child('users/' + fb.getAuth().uid + '/data/profileInfo');
+    usersFb = fb.child('users/' + fb.getAuth().uid);
 
     usersFb.once('value', function(data) {
       var profileInfo = data.val();

@@ -131,6 +131,7 @@
     fb.child('users').once('value', function(snap) {
       userListSnapshot = snap.val();
       _.forEach(userListSnapshot, function(user) {
+        //array!
         undecidedUsers.push(user);
       });
       $('.potentialMatch').append('<div><img src="' + undecidedUsers[0].image + '"></div>' );
@@ -145,13 +146,13 @@
 
   //FIND UNMATCHED USERS//
   function findUnmatched(data, uuid) {
+    debugger;
+    var users      = _.keys(userListSnapshot);
+    var myLikes    = usersLikes(data[0]);
+    var myDislikes = usersDislikes(data[0]);
+    var self       = [fb.getAuth().uid];
 
-    var users      = _.keys(data);
-    var myLikes    = usersLikes(data[uuid].data);
-    var myDislikes = usersDislikes(data[uuid].data);
-    var self       = [uuid];
-
-    return_.difference(users, self, myLikes, myDislikes);
+    return _.difference(users, self, myLikes, myDislikes);
   };
 
   //FIND MATCHES

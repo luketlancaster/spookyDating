@@ -103,11 +103,12 @@ function validateEmailAddress (emailAddress) {
     var userInfo = { name: $('#userProfileName').val(),
                      image: $('#userProfileImage').val(),
                      bio: $('#userProfileBio').val(),
-                     interests: $('#userProfileInterests').val()
+                     interests: $('#userProfileInterests').val(),
                     };
 
     addUserToDatabase(userInfo, function(data) {
-      $('.profile_info_holder').attr('data-uuid', data.name);
+      $('.profile_info_holder').attr('data-uuid', data);
+      userInfo.uuid = data;
     });
 
     addUserInformationToProfile(userInfo);
@@ -122,8 +123,8 @@ function validateEmailAddress (emailAddress) {
   //PUSH TO DB FUNCTION//
   function addUserToDatabase(data, cb) {
     usersFb = fb.child('users/' + fb.getAuth().uid);
-    var uuid = usersFb.push(data).key();
-    cb({ name: uuid });
+    var uuid = usersFb.set(data);
+    cb(uuid);
   }
 
 
@@ -147,12 +148,13 @@ function validateEmailAddress (emailAddress) {
 
 
   //PULL PROFILE INFO ONTO PAGE FROM FIREBASE//
-  function pullUserInformationFromFb(uuid, data) {
+  function pullUserInformationFromFb(data) {
     $('.profile_info_holder').append('<div><img src="' + data.image +
                                     '" class="profile_picture default_picture"><div>Name: ' + data.name +
                                     '</div><div>Bio: ' + data.bio +
                                     '</div><div>Interests: ' + data.interests +
                                     '</div></div>');
+    debugger;
 
     $(".default_picture").error(function() {
       $(this).attr('src', default_picture);
@@ -166,9 +168,7 @@ function validateEmailAddress (emailAddress) {
 
     usersFb.once('value', function(data) {
       var profileInfo = data.val();
-      Object.keys(profileInfo).forEach(function(uuid) {
-        pullUserInformationFromFb(uuid, profileInfo[uuid]);
-      });
+        pullUserInformationFromFb(profileInfo);
     });
   }
 
@@ -269,20 +269,8 @@ function validateEmailAddress (emailAddress) {
   }
 
   //LOGOUT FUNCTION//
-  $('#logout').click(function logout() {
-    fb.unauth();
-  });
-
   $('#logout').click(function() {
     fb.unauth();
     window.location.href = 'index.html';
   });
-
-
-  //REDIRECT FUNCTION - LOGOUT//
-  //function goToLoginPage() {
-    //if (fb.unauth()) {
-      //window.location.href = 'index.html';
-    //}
-  //}
 //});

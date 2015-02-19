@@ -21,6 +21,7 @@ cp bower_components/lodash/lodash.min.js public/vendor
 cp bower_components/firebase/firebase.js public/vendor
 cp bower_components/foundation/css/normalize.css public/vendor
 cp bower_components/foundation/css/foundation.css public/vendor
+cp cssshake/cssshake.min.css public/vendor
 
 
 ###############################

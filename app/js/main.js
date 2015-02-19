@@ -22,7 +22,7 @@ function validateEmailAddress (emailAddress) {
   }
 }
 
- //$(document).ready(function() {
+//$(document).ready(function() {
 
   var $form = $('.form');
   var $tbody = $('.tbody');
@@ -127,8 +127,6 @@ function validateEmailAddress (emailAddress) {
   }
 
 
-
-
   //APPEND PROFILE INFO TO PAGE//
   function addUserInformationToProfile(userInfo) {
     $('.profile_info_holder').append('<div><img src="' + userInfo.image +
@@ -174,18 +172,38 @@ function validateEmailAddress (emailAddress) {
     });
   }
 
-  //LOGOUT FUNCTION//
-  $('#logout').click(function logout() {
-    fb.unauth();
+  //GET USER OBJECT//
+  fb.child('users').once('value', function(snap) {
+
+    var data = snap.val();
   });
 
-  fb.child('users').once('value', function(snap) {
-    var userListSnapshot = snap.val();
+  function appendProspects(uuid, data) {
+    ('.potentialMatch').append('<div><img src="' + data.profileInfo.image +
+                               '" class="profile_picture default_picture"><div>Name: ' + data.profileInfo.name +
+                               '</div><div>Bio: ' + data.profileInfo.bio +
+                               '</div><div>Interests: ' + data.profileInfo.interests +
+                               '</div></div>');
+    ('.potentialMatch').attr('data-uuid', uuid);
+  }
 
-  })();
+  function seeProspects() {
+    usersFb = fb.child('users');
+    usersFb.once('value', function(data) {
+      Object.keys(data.val()).forEach(function(uuid) {
+        appendProspects(uuid, data.val()[uuid]);
+      });
+    });
+  }
 
 
-  //LIKE EVENT
+  //CLICK EVENT - LIKES//
+  //$('#like').click(function(event) {
+    //event.preventDefault();
+
+  //});
+  //
+  //  //LIKE EVENT
   //$('#like').on('click', function(evt) {
     //evt.preventDefault();
 
@@ -199,15 +217,18 @@ function validateEmailAddress (emailAddress) {
     //cb({ liked: uuid });
   //}
 
-  //FIND USERS NOT LIKED OR DISLIKED
-  function findUnmatched(data, uid) {
-    var users      = _.keys(data),
-        myLikes    = usersLikes(data[uid].data),
-        myDislikes = usersDislikes(data[uid].data),
-        self       = [uid];
 
-    return _.difference(users, self, myLikes, myDislikes);
-  }
+
+  //FIND UNMATCHED USERS//
+  function findUnmatched(data, uuid) {
+
+    var users      = _.keys(data);
+    var myLikes    = usersLikes(data[uuid].data);
+    var myDislikes = usersDislikes(data[uuid].data);
+    var self       = [uuid];
+
+    return_.difference(users, self, myLikes, myDislikes);
+  };
 
   //FIND MATCHES
   function matches(data, uuid) {
@@ -246,6 +267,11 @@ function validateEmailAddress (emailAddress) {
       return [];
     }
   }
+
+  //LOGOUT FUNCTION//
+  $('#logout').click(function logout() {
+    fb.unauth();
+  });
 
   $('#logout').click(function() {
     fb.unauth();

@@ -31,7 +31,7 @@
 
   //REDIRECT FUNCTION - LOGIN//
   function goToProfilePage() {
-      window.location.href = 'profile.html';
+    window.location.href = 'profile.html';
   }
 
   //REGISTER OR LOGIN FUNCTION//
@@ -70,23 +70,23 @@
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
     event.preventDefault();
-     userInfo = { name: $('#userProfileName').val(),
-                     image: $('#userProfileImage').val(),
-                     bio: $('#userProfileBio').val(),
-                     interests: $('#userProfileInterests').val()
-                };
+    userInfo = {
+           name: $('#userProfileName').val(),
+          image: $('#userProfileImage').val(),
+            bio: $('#userProfileBio').val(),
+      interests: $('#userProfileInterests').val(),
+         userID: usersFb.key()
+    };
 
     addUserToDatabase(userInfo, function(data) {
       $('.profile_info_holder').attr('data-uuid', data);
     });
 
     addUserInformationToPage(userInfo);
-
     $('#userProfileName').val('');
     $('#userProfileImage').val('');
     $('#userProfileBio').val('');
     $('#userProfileInterests').val('');
-
     $('#add_profile_info').toggleClass('hidden');
   });
 
@@ -122,33 +122,60 @@
     usersFb = fb.child('users/' + fb.getAuth().uid);
     usersFb.once('value', function(data) {
       profileInfo = data.val();
-      profileInfo.likes = [];
-      profileInfo.dislikes = [];
       addUserInformationToPage(profileInfo);
-    }, function(err){
-      console.log(err);
     });
 
     //ON PAGE LOAD, GET USER OBJECT//
     fb.child('users').once('value', function(snap) {
       userListSnapshot = snap.val();
+      delete userListSnapshot[(usersFb.key())]; //removes self from object
+
+
+      var currentUserToDisplay = _.sample(userListSnapshot);
+      debugger;
+
+      /*
+       * grab user from unmatched object √
+       * display user
+       * move user based on super user's decision
+       */
+
+
+
+  /*
       _.forEach(userListSnapshot, function(user) {
-        //array!
+        // make array out of userListSnapshot (object of all users)
         undecidedUsers.push(user);
       });
-      var usersToMatch = findUnmatched(undecidedUsers, fb.getAuth().uid);
+      undecidedUsers.sort();
+      console.log('FIRST PULL', undecidedUsers);
+      var usersToMatch = findUnmatched(undecidedUsers, fb.getAuth().uid); // <-- GRABS ARRAY WITHOUT USER'S UID
       var usersImageToMatch = [];
-      _.findKey(userListSnapshot, function(user) { usersImageToMatch.push(user.image) });
-      console.log(usersImageToMatch);
-      $('.potentialMatch').append('<div data-uid="' + usersToMatch[0] + '"><img src="' + usersImageToMatch[0] + '"></div>' );
+      _.findKey(userListSnapshot, function(user) { usersImageToMatch.push(user.image)});
+  */
+
+      $('.potentialMatch').append('<div data-uid="' + currentUserToDisplay.key() + '"><img src="' + currentUserToDisplay.image + '"></div>' );
     });
   }
 
   $('#like_match').on('click', function() {
-      //profileInfo.likes.push(this);
-    console.log(_.keys(userListSnapshot));
-    findUnmatched(undecidedUsers, fb.getAuth().uid);
+    // var array = [1, 2, 3, 4];
+    // var evens = _.remove(array, function(n) { return n % 2 == 0; });
 
+    console.log(undecidedUsers);
+    undecidedUsers = _.remove(undecidedUsers, function(u) { if( u !== $('div[data-uid]').data().uid ){ return u }});
+    console.log(undecidedUsers);
+    profileInfo.likes.push( $('div[data-uid]').data().uid );
+
+    //console.log('prior :', undecidedUsers.length, undecidedUsers[0].name);
+    //undecidedUsers.shift();
+    //console.log('post :', undecidedUsers.length, undecidedUsers[0].name);
+
+    usersFb.set(profileInfo);
+
+    //remove selected user from snapshot (shift)
+
+    //profit.
   });
 
 

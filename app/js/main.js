@@ -127,40 +127,16 @@
       addUserInformationToPage(profileInfo);
     });
 
-<<<<<<< HEAD
-  //GET USER OBJECT//
-  fb.child('users').once('value', function(snap) {
-    var data = snap.val();
-  });
-
-  function appendProspects(uuid, data) {
-    ('.potentialMatch').append('<div><img src="' + data.profileInfo.image +
-                               '" class="profile_picture default_picture"><div>Name: ' + data.profileInfo.name +
-                               '</div><div>Bio: ' + data.profileInfo.bio +
-                               '</div><div>Interests: ' + data.profileInfo.interests +
-                               '</div></div>');
-    ('.potentialMatch').attr('data-uuid', uuid);
-  }
-
-  function seeProspects() {
-    usersFb = fb.child('users');
-    usersFb.once('value', function(data) {
-      Object.keys(data.val()).forEach(function(uuid) {
-        appendProspects(uuid, data.val()[uuid]);
-=======
     //ON PAGE LOAD, GET USER OBJECT//
     fb.child('users').once('value', function(snap) {
       userListSnapshot = snap.val();
       _.forEach(userListSnapshot, function(user) {
         //array!
         undecidedUsers.push(user);
->>>>>>> 9925b2660813f690edf0a03592db88306e5c5d7b
       });
       $('.potentialMatch').append('<div><img src="' + undecidedUsers[0].image + '"></div>' );
     });
   }
-
-<<<<<<< HEAD
 
   //CLICK EVENT - LIKES//
   //$('#like').click(function(event) {
@@ -181,13 +157,11 @@
     //var uuid = usersFb.push(data).key();
     //cb({ liked: uuid });
   //}
-=======
+
   $('#like_match').on('click', function() {
       //profileInfo.likes.push(this);
     console.log(_.keys(userListSnapshot));
   });
-
->>>>>>> 9925b2660813f690edf0a03592db88306e5c5d7b
 
   //FIND UNMATCHED USERS//
   function findUnmatched(data, uuid) {

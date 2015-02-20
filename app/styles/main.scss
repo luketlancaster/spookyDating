@@ -35,6 +35,14 @@ img {
   transform: scale(10,10);
 }
 
+.navLabel {
+  color: orange !important;
+}
+
+.navLabel:hover {
+  color: white;
+}
+
 
 .navbar_li {
   margin: 20px;

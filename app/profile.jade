@@ -4,16 +4,7 @@ html
   include partials/_head.jade
 
   body
-    .icon-bar.three-up
-      a(href="profile.html").item
-        img.navImg(src="http://cdn.flaticon.com/png/256/60079.png")
-        label Profile
-      a(href="match.html").item
-        img.navImg(src="http://cdn.flaticon.com/png/256/2811.png")
-        label Matches
-      a.item#logout
-        img.navImg(src="http://cdn.flaticon.com/png/256/59580.png")
-        label Logout
+    include partials/_navbar.jade
 
     .row
       .small-6.columns.small-offset-3#add_profile_info

@@ -1,6 +1,7 @@
 /* jshint node: true, jquery: true */
 'use strict';
 //$(document).ready(function() {
+
   var fbUrl = 'https://spookydating.firebaseio.com';
   var fb = new Firebase(fbUrl);
   var defaultPicture = "http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
@@ -131,53 +132,55 @@
       delete userListSnapshot[(usersFb.key())]; //removes self from object
 
 
-      var currentUserToDisplay = _.sample(userListSnapshot);
-      debugger;
+      var currentUserToDisplay = getNewUnmatchedUser();
 
       /*
        * grab user from unmatched object √
-       * display user
+       * display user √
        * move user based on super user's decision
        */
-
-
-
-  /*
-      _.forEach(userListSnapshot, function(user) {
-        // make array out of userListSnapshot (object of all users)
-        undecidedUsers.push(user);
-      });
-      undecidedUsers.sort();
-      console.log('FIRST PULL', undecidedUsers);
-      var usersToMatch = findUnmatched(undecidedUsers, fb.getAuth().uid); // <-- GRABS ARRAY WITHOUT USER'S UID
-      var usersImageToMatch = [];
-      _.findKey(userListSnapshot, function(user) { usersImageToMatch.push(user.image)});
-  */
-
-      $('.potentialMatch').append('<div data-uid="' + currentUserToDisplay.key() + '"><img src="' + currentUserToDisplay.image + '"></div>' );
+      showUnmatchedUser(currentUserToDisplay);
     });
   }
 
+  function getNewUnmatchedUser () {
+    return _.sample(userListSnapshot);
+  }
+
+  function showUnmatchedUser (user) {
+    $('.potentialMatch').append('<div data-uid="' + user.userID + '"><img src="' + user.image + '"></div>' );
+  }
+
+
+  function generateNewChoice () {
+    $('.potentialMatch').empty();
+    showUnmatchedUser(getNewUnmatchedUser());
+  }
+
   $('#like_match').on('click', function() {
-    // var array = [1, 2, 3, 4];
-    // var evens = _.remove(array, function(n) { return n % 2 == 0; });
-
-    console.log(undecidedUsers);
-    undecidedUsers = _.remove(undecidedUsers, function(u) { if( u !== $('div[data-uid]').data().uid ){ return u }});
-    console.log(undecidedUsers);
-    profileInfo.likes.push( $('div[data-uid]').data().uid );
-
-    //console.log('prior :', undecidedUsers.length, undecidedUsers[0].name);
-    //undecidedUsers.shift();
-    //console.log('post :', undecidedUsers.length, undecidedUsers[0].name);
-
+    var likedUser = $('div[data-uid]').data().uid;
+    if (!profileInfo.likes) {
+      profileInfo.likes = [];
+    }
+    profileInfo.likes.push( likedUser );
     usersFb.set(profileInfo);
-
-    //remove selected user from snapshot (shift)
-
+    delete userListSnapshot[(likedUser)];
+    generateNewChoice();
     //profit.
   });
 
+
+  $('#dislike_match').on('click', function() {
+    var dislikedUser = $('div[data-uid]').data().uid;
+    if (!profileInfo.dislikes) {
+      profileInfo.dislikes = [];
+    }
+    profileInfo.dislikes.push( dislikedUser );
+    usersFb.set(profileInfo);
+    delete userListSnapshot[(dislikedUser)];
+    generateNewChoice();
+    //profit.
+  });
 
   //FIND UNMATCHED USERS//
   function findUnmatched(data, uuid) {

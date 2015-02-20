@@ -7,9 +7,11 @@
   var defaultPicture = "http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
   var usersFb;
   var userListSnapshot;
+  var allUsers;
   var undecidedUsers = [];
   var profileInfo;
   var userInfo;
+  var outOfMatchesPicture = "http://38.media.tumblr.com/tumblr_maxvb8paub1qiw53no1_500.gif";
 
   //LOGIN FUNCTION//
   $('#login').click(function() {
@@ -129,16 +131,9 @@
     //ON PAGE LOAD, GET USER OBJECT//
     fb.child('users').once('value', function(snap) {
       userListSnapshot = snap.val();
+      //allUsers = userListSnapshot.map(); //total list of users (including me!)
       delete userListSnapshot[(usersFb.key())]; //removes self from object
-
-
       var currentUserToDisplay = getNewUnmatchedUser();
-
-      /*
-       * grab user from unmatched object √
-       * display user √
-       * move user based on super user's decision
-       */
       showUnmatchedUser(currentUserToDisplay);
     });
   }
@@ -148,9 +143,18 @@
   }
 
   function showUnmatchedUser (user) {
-    $('.potentialMatch').append('<div data-uid="' + user.userID + '"><img src="' + user.image + '"></div>' );
+    if(user && user.userID){
+      $('.potentialMatch').append('<div data-uid="' + user.userID + '"><img src="' + user.image + '"></div>' );
+    }else{
+      showOutOfMatchesPicture();
+    }
   }
 
+  function showOutOfMatchesPicture(){
+    $('.potentialMatch').append('<img src="' + outOfMatchesPicture + '"/>');
+    $('#like_match').hide();
+    $('#dislike_match').hide();
+  }
 
   function generateNewChoice () {
     $('.potentialMatch').empty();
@@ -182,15 +186,12 @@
     //profit.
   });
 
-  //FIND UNMATCHED USERS//
-  function findUnmatched(data, uuid) {
-    var users      = _.keys(userListSnapshot);
-    var myLikes    = usersLikes(data[0]);
-    var myDislikes = usersDislikes(data[0]);
-    var self       = [fb.getAuth().uid];
 
-    return _.difference(users, self, myLikes, myDislikes);
-  };
+
+
+ // function findMyMatches () {
+ //   return _.filter(allUsers, _.matches(usersFb.key()));
+ // }
 
   //FIND MATCHES
   function matches(data, uuid) {
@@ -203,6 +204,20 @@
       return _.includes(userLikes, uuid);
     });
   }
+
+
+
+  //FIND UNMATCHED USERS//
+  function findUnmatched(data, uuid) {
+    var users      = _.keys(userListSnapshot);
+    var myLikes    = usersLikes(data[0]);
+    var myDislikes = usersDislikes(data[0]);
+    var self       = [fb.getAuth().uid];
+
+    return _.difference(users, self, myLikes, myDislikes);
+  };
+
+
 
   function usersLikes(userData) {
     if (userData && userData.likes) {

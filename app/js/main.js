@@ -1,41 +1,17 @@
-/* jshint node: true */
+/* jshint node: true, jquery: true  */
 'use strict';
-
-//FUNCTIONS FOR TESTING//
-var hello = function hello() {
-  return 'world';
-};
-
-
-function validatePassword (password) {
-  if (password.length > 5) {
-    return true;
-  } else {
-    return false;
-  }
-}
-function validateEmailAddress (emailAddress) {
-  if (emailAddress.substring(emailAddress.length-4) === ".com") {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 //$(document).ready(function() {
-
-  var $form = $('.form');
-  var $tbody = $('.tbody');
   var fbUrl = 'https://spookydating.firebaseio.com';
   var fb = new Firebase(fbUrl);
-  var default_picture ="http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
+  var defaultPicture = "http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
   var usersFb;
-  var loginData;
   var userListSnapshot;
+  var undecidedUsers = [];
+  var profileInfo;
+  var userInfo;
 
   //LOGIN FUNCTION//
-  $('#login').click(function(event) {
-   event.preventDefault();
+  $('#login').click(function() {
     var $form = $($(this).closest('form'));
     var email = $form.find('[type="email"]').val();
     var password = $form.find('[type="password"]').val();
@@ -44,36 +20,30 @@ function validateEmailAddress (emailAddress) {
   });
 
   function userLogin(loginData) {
-    fb.authWithPassword(loginData, function(err, auth) {
+    fb.authWithPassword(loginData, function(err) {
       if (err) {
         $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
       } else {
         goToProfilePage();
       }
     });
-  };
+  }
 
   //REDIRECT FUNCTION - LOGIN//
   function goToProfilePage() {
-    if (fb.getAuth()) {
       window.location.href = 'profile.html';
-    } else {
-      $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
-      return 'ERROR';
-    }
   }
 
-  //REGISTER FUNCTION//
-  $('#createUser').click(function(event) {
-    event.preventDefault();
+  //REGISTER OR LOGIN FUNCTION//
+  $('#createUser').click(function() {
     var $form = $($(this).closest('form'));
     var email = $form.find('[type="email"]').val();
     var password = $form.find('[type="password"]').val();
     var loginData = {email: email, password: password};
 
-    registerAndLogin(loginData, function(err, auth) {
+    registerAndLogin(loginData, function(err) {
       if (err) {
-        $('.error').text(err);
+        $('.error').text('BEWARE, SPOOKSTER! Your email address or password is invalid.');
       } else {
         goToProfilePage();
       }
@@ -100,18 +70,18 @@ function validateEmailAddress (emailAddress) {
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
     event.preventDefault();
-    var userInfo = { name: $('#userProfileName').val(),
+     userInfo = { name: $('#userProfileName').val(),
                      image: $('#userProfileImage').val(),
                      bio: $('#userProfileBio').val(),
-                     interests: $('#userProfileInterests').val(),
-                    };
+                     interests: $('#userProfileInterests').val()
+                };
 
     addUserToDatabase(userInfo, function(data) {
       $('.profile_info_holder').attr('data-uuid', data);
-      userInfo.uuid = data;
     });
 
-    addUserInformationToProfile(userInfo);
+    addUserInformationToPage(userInfo);
+
     $('#userProfileName').val('');
     $('#userProfileImage').val('');
     $('#userProfileBio').val('');
@@ -127,51 +97,37 @@ function validateEmailAddress (emailAddress) {
     cb(uuid);
   }
 
-
-  //APPEND PROFILE INFO TO PAGE//
-  function addUserInformationToProfile(userInfo) {
-    $('.profile_info_holder').append('<div><img src="' + userInfo.image +
-                                    '" class=profile_picture default_picture"><div>Name: ' + userInfo.name +
-                                    '</div><div>Bio: ' + userInfo.bio +
-                                    '</div><div>Interests: ' + userInfo.interests +
-                                    '</div></div>');
-
-    $(".default_picture").error(function() {
-      $(this).attr('src', default_picture);
-    });
-  }
-
   //CLEAR FORM//
   function emptyProfileForm(form) {
     $('form').empty();
   }
 
 
-  //PULL PROFILE INFO ONTO PAGE FROM FIREBASE//
-  function pullUserInformationFromFb(data) {
+  //ADD USER INFORMATION TO PAGE//
+  function addUserInformationToPage(data) {
     $('.profile_info_holder').append('<div><img src="' + data.image +
-                                    '" class="profile_picture default_picture"><div>Name: ' + data.name +
+                                    '" class="profile_picture defaultPicture"><div>Name: ' + data.name +
                                     '</div><div>Bio: ' + data.bio +
                                     '</div><div>Interests: ' + data.interests +
                                     '</div></div>');
-    debugger;
 
-    $(".default_picture").error(function() {
-      $(this).attr('src', default_picture);
+    $(".defaultPicture").error(function() {
+      $(this).attr('src', defaultPicture);
     });
    }
 
 
-  //PULL FROM DB FUNCTION//
+  //LOAD INFORMATION WHEN LOGGED IN//
   if(fb.getAuth()) {
     usersFb = fb.child('users/' + fb.getAuth().uid);
-
     usersFb.once('value', function(data) {
-      var profileInfo = data.val();
-        pullUserInformationFromFb(profileInfo);
+      profileInfo = data.val();
+      profileInfo.likes = [];
+      profileInfo.dislikes = [];
+      addUserInformationToPage(profileInfo);
     });
-  }
 
+<<<<<<< HEAD
   //GET USER OBJECT//
   fb.child('users').once('value', function(snap) {
     var data = snap.val();
@@ -191,10 +147,20 @@ function validateEmailAddress (emailAddress) {
     usersFb.once('value', function(data) {
       Object.keys(data.val()).forEach(function(uuid) {
         appendProspects(uuid, data.val()[uuid]);
+=======
+    //ON PAGE LOAD, GET USER OBJECT//
+    fb.child('users').once('value', function(snap) {
+      userListSnapshot = snap.val();
+      _.forEach(userListSnapshot, function(user) {
+        //array!
+        undecidedUsers.push(user);
+>>>>>>> 9925b2660813f690edf0a03592db88306e5c5d7b
       });
+      $('.potentialMatch').append('<div><img src="' + undecidedUsers[0].image + '"></div>' );
     });
   }
 
+<<<<<<< HEAD
 
   //CLICK EVENT - LIKES//
   //$('#like').click(function(event) {
@@ -215,16 +181,23 @@ function validateEmailAddress (emailAddress) {
     //var uuid = usersFb.push(data).key();
     //cb({ liked: uuid });
   //}
+=======
+  $('#like_match').on('click', function() {
+      //profileInfo.likes.push(this);
+    console.log(_.keys(userListSnapshot));
+  });
+
+>>>>>>> 9925b2660813f690edf0a03592db88306e5c5d7b
 
   //FIND UNMATCHED USERS//
   function findUnmatched(data, uuid) {
+    debugger;
+    var users      = _.keys(userListSnapshot);
+    var myLikes    = usersLikes(data[0]);
+    var myDislikes = usersDislikes(data[0]);
+    var self       = [fb.getAuth().uid];
 
-    var users      = _.keys(data);
-    var myLikes    = usersLikes(data[uuid].data);
-    var myDislikes = usersDislikes(data[uuid].data);
-    var self       = [uuid];
-
-    return_.difference(users, self, myLikes, myDislikes);
+    return _.difference(users, self, myLikes, myDislikes);
   };
 
   //FIND MATCHES
@@ -270,4 +243,28 @@ function validateEmailAddress (emailAddress) {
     fb.unauth();
     window.location.href = 'index.html';
   });
+
+
 //});
+
+//FUNCTIONS FOR TESTING//
+var hello = function hello() {
+  return 'world';
+};
+
+function validatePassword (password) {
+  if (password.length > 5) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function validateEmailAddress (emailAddress) {
+  if (emailAddress.substring(emailAddress.length-4) === ".com") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+

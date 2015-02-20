@@ -112,7 +112,7 @@ describe('addUserInformationToProfile', function () {
                         interests: 'anything but garlic' } );
     var $divs = ('div');
     $('div').length.should.equal(1);
-    addUserInformationToProfile(profileInfo);
+   addUserInformationToPage(profileInfo);
     $('div').length.should.equal(5);
   });
 });

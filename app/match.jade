@@ -7,12 +7,16 @@ html
     include partials/_navbar.jade
 
     .row
-      .large-6.columns.large-offset-3
+      .large-3.columns
+        img.sideImg.shake.shake-constant.hover-stop.shake-slow(src="http://cdn.flaticon.com/png/256/60173.png")
+      .large-6.columns
         .match_page_contents
           h1 Make a match!
           div.potentialMatch
-          button#like_match Like
-          button#dislike_match Hell naw!
+          button#like_match.shake.shake-rotate Like
+          button#dislike_match.shake.shake-rotate Hell naw!
+      .large-3.columns
+        img.sideImg.shake.shake-constant.hover-stop.shake-slow(src="http://cdn.flaticon.com/png/256/60086.png")
 
 
     script(src="vendor/jquery.min.js")

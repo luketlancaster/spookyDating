@@ -132,7 +132,6 @@
 
 
       var currentUserToDisplay = _.sample(userListSnapshot);
-      debugger;
 
       /*
        * grab user from unmatched object √

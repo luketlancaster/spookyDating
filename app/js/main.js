@@ -1,4 +1,4 @@
-/* jshint node: true, jquery: true  */
+/* jshint node: true, jquery: true */
 'use strict';
 //$(document).ready(function() {
   var fbUrl = 'https://spookydating.firebaseio.com';
@@ -125,6 +125,8 @@
       profileInfo.likes = [];
       profileInfo.dislikes = [];
       addUserInformationToPage(profileInfo);
+    }, function(err){
+      console.log(err);
     });
 
     //ON PAGE LOAD, GET USER OBJECT//
@@ -134,7 +136,11 @@
         //array!
         undecidedUsers.push(user);
       });
-      $('.potentialMatch').append('<div><img src="' + undecidedUsers[0].image + '"></div>' );
+      var usersToMatch = findUnmatched(undecidedUsers, fb.getAuth().uid);
+      var usersImageToMatch = [];
+      _.findKey(userListSnapshot, function(user) { usersImageToMatch.push(user.image) });
+      console.log(usersImageToMatch);
+      $('.potentialMatch').append('<div data-uid="' + usersToMatch[0] + '"><img src="' + usersImageToMatch[0] + '"></div>' );
     });
   }
 
@@ -161,11 +167,12 @@
   $('#like_match').on('click', function() {
       //profileInfo.likes.push(this);
     console.log(_.keys(userListSnapshot));
+    findUnmatched(undecidedUsers, fb.getAuth().uid);
+
   });
 
   //FIND UNMATCHED USERS//
   function findUnmatched(data, uuid) {
-    debugger;
     var users      = _.keys(userListSnapshot);
     var myLikes    = usersLikes(data[0]);
     var myDislikes = usersDislikes(data[0]);

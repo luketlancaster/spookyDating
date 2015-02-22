@@ -186,9 +186,6 @@
     //profit.
   });
 
-
-
-
   function findMyMatches (currentUserLogin, listOfUserObjects) {
     var currentUserLikes = [];
     _.forIn(listOfUserObjects, function(user) {
@@ -212,6 +209,19 @@
       return _.includes(userLikes, uuid);
     });
   }
+
+  $('#showMatchedUsers').on('click', function() {
+    var matchedUsers = findMyMatches(usersFb.key(), userListSnapshot);
+    _.forEach(matchedUsers, function(item) {
+      $('.matches_holder').append('<div class="matchedUserInfo"><img class="matchedUserImage" src="' + item.image + '"><div>' +
+                                  item.name +
+                                  '</div><div>' +
+                                  item.bio +
+                                  '</div><div>' +
+                                  item.interests +
+                                  '</div></div>');
+    })
+  })
 
 
 

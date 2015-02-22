@@ -1,6 +1,7 @@
 /* jshint node: true, jquery: true */
 'use strict';
 //$(document).ready(function() {
+
   var fbUrl = 'https://spookydating.firebaseio.com';
   var fb = new Firebase(fbUrl);
   var defaultPicture = "http://vignette4.wikia.nocookie.net/mansionsofmadness/images/4/4d/Cthonian.jpg/revision/latest/scale-to-width/212?cb=20130219200035";
@@ -31,7 +32,7 @@
 
   //REDIRECT FUNCTION - LOGIN//
   function goToProfilePage() {
-      window.location.href = 'profile.html';
+    window.location.href = 'profile.html';
   }
 
   //REGISTER OR LOGIN FUNCTION//
@@ -70,23 +71,23 @@
   //APPEND TO PROFILE AND PUSH TO FIREBASE//
   $('#submitUserDataToPage').click(function(event) {
     event.preventDefault();
-     userInfo = { name: $('#userProfileName').val(),
-                     image: $('#userProfileImage').val(),
-                     bio: $('#userProfileBio').val(),
-                     interests: $('#userProfileInterests').val()
-                };
+    userInfo = {
+           name: $('#userProfileName').val(),
+          image: $('#userProfileImage').val(),
+            bio: $('#userProfileBio').val(),
+      interests: $('#userProfileInterests').val(),
+         userID: usersFb.key()
+    };
 
     addUserToDatabase(userInfo, function(data) {
       $('.profile_info_holder').attr('data-uuid', data);
     });
 
     addUserInformationToPage(userInfo);
-
     $('#userProfileName').val('');
     $('#userProfileImage').val('');
     $('#userProfileBio').val('');
     $('#userProfileInterests').val('');
-
     $('#add_profile_info').toggleClass('hidden');
   });
 
@@ -122,53 +123,62 @@
     usersFb = fb.child('users/' + fb.getAuth().uid);
     usersFb.once('value', function(data) {
       profileInfo = data.val();
-      profileInfo.likes = [];
-      profileInfo.dislikes = [];
       addUserInformationToPage(profileInfo);
-    }, function(err){
-      console.log(err);
     });
 
     //ON PAGE LOAD, GET USER OBJECT//
     fb.child('users').once('value', function(snap) {
       userListSnapshot = snap.val();
-      _.forEach(userListSnapshot, function(user) {
-        //array!
-        undecidedUsers.push(user);
-      });
-      var usersToMatch = findUnmatched(undecidedUsers, fb.getAuth().uid);
-      var usersImageToMatch = [];
-      _.findKey(userListSnapshot, function(user) { usersImageToMatch.push(user.image) });
-      console.log(usersImageToMatch);
-      $('.potentialMatch').append('<div data-uid="' + usersToMatch[0] + '"><img src="' + usersImageToMatch[0] + '"></div>' );
+      delete userListSnapshot[(usersFb.key())]; //removes self from object
+
+
+      var currentUserToDisplay = getNewUnmatchedUser();
+
+      /*
+       * grab user from unmatched object √
+       * display user √
+       * move user based on super user's decision
+       */
+      showUnmatchedUser(currentUserToDisplay);
     });
   }
 
-  //CLICK EVENT - LIKES//
-  //$('#like').click(function(event) {
-    //event.preventDefault();
+  function getNewUnmatchedUser () {
+    return _.sample(userListSnapshot);
+  }
 
-  //});
-  //
-  //  //LIKE EVENT
-  //$('#like').on('click', function(evt) {
-    //evt.preventDefault();
+  function showUnmatchedUser (user) {
+    $('.potentialMatch').append('<div data-uid="' + user.userID + '"><img src="' + user.image + '"></div>' );
+  }
 
-    //var likedUuid = $('#matchImage').attr('data-uuid').val();
 
-    //likeUser(likedUuid);
-  //});
-
-  //function likeUser(data, cb) {
-    //var uuid = usersFb.push(data).key();
-    //cb({ liked: uuid });
-  //}
+  function generateNewChoice () {
+    $('.potentialMatch').empty();
+    showUnmatchedUser(getNewUnmatchedUser());
+  }
 
   $('#like_match').on('click', function() {
-      //profileInfo.likes.push(this);
-    console.log(_.keys(userListSnapshot));
-    findUnmatched(undecidedUsers, fb.getAuth().uid);
+    var likedUser = $('div[data-uid]').data().uid;
+    if (!profileInfo.likes) {
+      profileInfo.likes = [];
+    }
+    profileInfo.likes.push( likedUser );
+    usersFb.set(profileInfo);
+    delete userListSnapshot[(likedUser)];
+    generateNewChoice();
+    //profit.
+  });
 
+  $('#dislike_match').on('click', function() {
+    var dislikedUser = $('div[data-uid]').data().uid;
+    if (!profileInfo.dislikes) {
+      profileInfo.dislikes = [];
+    }
+    profileInfo.dislikes.push( dislikedUser );
+    usersFb.set(profileInfo);
+    delete userListSnapshot[(dislikedUser)];
+    generateNewChoice();
+    //profit.
   });
 
   //FIND UNMATCHED USERS//

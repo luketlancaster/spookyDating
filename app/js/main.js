@@ -189,16 +189,24 @@
 
 
 
- // function findMyMatches () {
- //   return _.filter(allUsers, _.matches(usersFb.key()));
- // }
+  function findMyMatches (currentUserLogin, listOfUserObjects) {
+    var currentUserLikes = [];
+    _.forIn(listOfUserObjects, function(user) {
+      _.forEach(user.likes, function(item) {
+        if (item === currentUserLogin) {
+          currentUserLikes.push(user);
+        }
+      })
+    });
+    return currentUserLikes;
+  }
 
   //FIND MATCHES
   function matches(data, uuid) {
-    var myLikes = usersLikes(data[uuid].data);
+    var myLikes = profileInfo.likes;
 
     return _.filter(myLikes, function(user, i) {
-      var userData = data[user].data,
+      var userData = userListSnapshot[user].data,
           userLikes = usersLikes(userData);
 
       return _.includes(userLikes, uuid);

@@ -209,6 +209,7 @@
   });
 
   $('#showMatchedUsers').on('click', function() {
+    $('.matches_holder').empty();
     var matchedUsers = findMyMatches(usersFb.key(), userListSnapshot);
     _.forEach(matchedUsers, function(item) {
       $('.matches_holder').append('<div class="matchedUser"><img class="matchedUserImage" src="' +

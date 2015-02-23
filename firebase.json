@@ -1,6 +1,6 @@
 {
   "firebase": "spookydating",
-  "public": "public/index.html",
+  "public": "public",
   "ignore": [
     "firebase.json",
     "**/.*",

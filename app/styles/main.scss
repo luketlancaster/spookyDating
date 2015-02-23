@@ -63,6 +63,24 @@ img {
 
 }
 
+.matchedUser {
+  display: inline-block;
+  height: 325px;
+  width: 250px;
+  margin: 25px 50px;
+  text-align: center;
+  font-family: 'Amatic SC', cursive;
+  font-size: 22px;
+  font-weight: bold; 
+  background: lightgrey;
+
+  img {
+    margin-top: 25px;
+    height: 150px;
+    width: 100px;
+  }
+}
+
 .hidden {
   display: none;
 }

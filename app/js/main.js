@@ -211,7 +211,7 @@
   $('#showMatchedUsers').on('click', function() {
     var matchedUsers = findMyMatches(usersFb.key(), userListSnapshot);
     _.forEach(matchedUsers, function(item) {
-      $('.matches_holder').append('<div class="matchedUserInfo"><img class="matchedUserImage" src="' +
+      $('.matches_holder').append('<div class="matchedUser"><img class="matchedUserImage" src="' +
                                   item.image +
                                   '"><div>Name: ' +
                                   item.name +

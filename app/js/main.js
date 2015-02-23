@@ -198,6 +198,32 @@
     return currentUserLikes;
   }
 
+  if (profileInfo !== 'undefined') {
+    $('.profile_page_headers').addClass('hidden');
+    $('#userProfileInfoForm').addClass('hidden');
+    $('.profileButtonControls').append('<button class="editProfile"> Edit Profile');
+  }
+
+  $('.editProfile').on('click', function() {
+    $('#userProfileInfoForm').toggleClass('hidden');
+  });
+
+  $('#showMatchedUsers').on('click', function() {
+    var matchedUsers = findMyMatches(usersFb.key(), userListSnapshot);
+    _.forEach(matchedUsers, function(item) {
+      $('.matches_holder').append('<div class="matchedUserInfo"><img class="matchedUserImage" src="' +
+                                  item.image +
+                                  '"><div>Name: ' +
+                                  item.name +
+                                  '</div><div>Bio: ' +
+                                  item.bio +
+                                  '</div><div>Interests: ' +
+                                  item.interests +
+                                  '</div></div>');
+    })
+  })
+
+
   //FIND MATCHES
   function matches(data, uuid) {
     var myLikes = profileInfo.likes;
@@ -210,33 +236,14 @@
     });
   }
 
-  $('#showMatchedUsers').on('click', function() {
-    var matchedUsers = findMyMatches(usersFb.key(), userListSnapshot);
-    _.forEach(matchedUsers, function(item) {
-      $('.matches_holder').append('<div class="matchedUserInfo"><img class="matchedUserImage" src="' + item.image + '"><div>' +
-                                  item.name +
-                                  '</div><div>' +
-                                  item.bio +
-                                  '</div><div>' +
-                                  item.interests +
-                                  '</div></div>');
-    })
-  })
-
-
-
   //FIND UNMATCHED USERS//
   function findUnmatched(data, uuid) {
     var users      = _.keys(userListSnapshot);
     var myLikes    = usersLikes(data[0]);
     var myDislikes = usersDislikes(data[0]);
     var self       = [fb.getAuth().uid];
-
     return _.difference(users, self, myLikes, myDislikes);
   };
-
-
-
   function usersLikes(userData) {
     if (userData && userData.likes) {
       return _(userData.likes)
@@ -249,7 +256,6 @@
       return [];
     }
   }
-
   function usersDislikes(userData) {
     if (userData && userData.dislikes) {
       return _(userData.dislikes)
@@ -262,7 +268,6 @@
       return [];
     }
   }
-
   //LOGOUT FUNCTION//
   $('#logout').click(function() {
     fb.unauth();

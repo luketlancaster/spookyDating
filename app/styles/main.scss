@@ -54,9 +54,14 @@ img {
   }
 }
 
-/*.profile_info_holder {*/
-  /*margin: */
-/*}*/
+.potentialMatch {
+  background-color: lightgrey;
+
+  img {
+    max-height: 300px;
+  }
+
+}
 
 .hidden {
   display: none;
